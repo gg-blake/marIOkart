@@ -16,6 +16,7 @@ from src.visualization.draw import consume_draw_stack, draw_text, draw_paragraph
 from src.core.memory import *
 from src.utils.vector import get_mps_device
 from src.visualization.overlay import (
+    distance_overlay,
     player_overlay,
     raycasting_overlay,
     collision_overlay,
@@ -204,7 +205,7 @@ def run_emulator(overlays):
     global renderer, callback, emu_global, is_running
     emu = DeSmuME()
     emu.open("private/mariokart_ds.nds")
-    emu.savestate.load(0)
+    emu.savestate.load(1)
 
     emu_global = emu
     emu.volume_set(0)
@@ -259,10 +260,9 @@ if __name__ == "__main__":
     start_keyboard_listener()
     run_emulator(
         [
-            # player_overlay,
             collision_overlay,
             checkpoint_overlay_1,
             checkpoint_overlay_2,
-            #raycasting_overlay
+            distance_overlay
         ],
     )

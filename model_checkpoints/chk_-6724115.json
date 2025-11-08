@@ -1,0 +1,39 @@
+{
+    "n_inputs": 6,
+    "n_outputs": 2,
+    "nodes": [
+        {
+            "id": 0,
+            "type": "input"
+        },
+        {
+            "id": 1,
+            "type": "input"
+        },
+        {
+            "id": 2,
+            "type": "input"
+        },
+        {
+            "id": 3,
+            "type": "input"
+        },
+        {
+            "id": 4,
+            "type": "input"
+        },
+        {
+            "id": 5,
+            "type": "input"
+        },
+        {
+            "id": 6,
+            "type": "output"
+        },
+        {
+            "id": 7,
+            "type": "output"
+        }
+    ],
+    "conns": []
+}

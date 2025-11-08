@@ -13,6 +13,7 @@ from torch._prims_common import DeviceLikeType
 
 AVAILABLE_OVERLAYS: list[Callable[[DeSmuME, DeviceLikeType | None], None]] = []
 
+
 def register_overlay(func: Callable[[DeSmuME, DeviceLikeType | None], None]):
     AVAILABLE_OVERLAYS.append(func)
     return func
@@ -27,8 +28,6 @@ def collision_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
     indices = kcl.search_triangles(position)
     if indices is None or len(indices) == 0:
         return
-
-    
 
     indices = torch.tensor(indices, dtype=torch.int32, device=device)
     triangles = kcl.triangles
@@ -51,19 +50,21 @@ def collision_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
 
         # project triangles to screen space
         v1, v2, v3 = triangles[indices_masked].chunk(3, dim=1)
-        v1 = project_to_screen(emu, v1.squeeze(1), device=device)
-        v2 = project_to_screen(emu, v2.squeeze(1), device=device)
-        v3 = project_to_screen(emu, v3.squeeze(1), device=device)
+        v1_proj, mask1 = project_to_screen(emu, v1.squeeze(1), device=device)
+        v2_proj, mask2 = project_to_screen(emu, v2.squeeze(1), device=device)
+        v3_proj, mask3 = project_to_screen(emu, v3.squeeze(1), device=device)
         
         # clip z
-        valid = lambda x: (x[:, 2] < -Z_NEAR) & (x[:, 2] > -Z_FAR)
-        valid_mask = valid(v1) & valid(v2) & valid(v3)
-        v1 = torch.cat([v1[:, :2], v1[:, 3, None]], dim=-1)
-        v2 = torch.cat([v2[:, :2], v2[:, 3, None]], dim=-1)
-        v3 = torch.cat([v3[:, :2], v3[:, 3, None]], dim=-1)
-        v1_np = v1[valid_mask].detach().cpu().numpy()
-        v2_np = v2[valid_mask].detach().cpu().numpy()
-        v3_np = v3[valid_mask].detach().cpu().numpy()
+        valid_mask = mask1 & mask2 & mask3
+        if not valid_mask.all():
+            continue
+        
+        v1_proj = torch.cat([v1_proj[:, :2], v1_proj[:, 3, None]], dim=-1)
+        v2_proj = torch.cat([v2_proj[:, :2], v2_proj[:, 3, None]], dim=-1)
+        v3_proj = torch.cat([v3_proj[:, :2], v3_proj[:, 3, None]], dim=-1)
+        v1_np = v1_proj.detach().cpu().numpy()
+        v2_np = v2_proj.detach().cpu().numpy()
+        v3_np = v3_proj.detach().cpu().numpy()
         draw_triangles(v1_np, v2_np, v3_np, np.array(color))
 
     
@@ -83,8 +84,7 @@ def raycasting_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
     def _overlay(dir: torch.Tensor, color: np.ndarray, **sample_kwargs):
         nonlocal position
         points_f = read_facing_point_obstacle(
-            emu, 
-            position, 
+            emu,
             dir, 
             device=device,
             **sample_kwargs
@@ -100,11 +100,9 @@ def raycasting_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
         if points_f.shape[0] == 0:
             return
         
-        raycasted_points_proj = project_to_screen(emu, points_f, device=device)
-        z_clip_mask_2 = z_clip_mask(raycasted_points_proj)
+        raycasted_points_proj, _ = project_to_screen(emu, points_f, device=device)
     
         # depth filter 2
-        raycasted_points_proj = raycasted_points_proj[z_clip_mask_2]
         if raycasted_points_proj.shape[0] == 0:
             return
     
@@ -116,7 +114,7 @@ def raycasting_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
         intersect_proj_np = raycasted_points_proj.detach().cpu().numpy()
         
         pos = position[None, :].repeat(raycasted_points_proj.shape[0], 1)
-        pos_proj = project_to_screen(emu, pos, device=device)
+        pos_proj, _ = project_to_screen(emu, pos, device=device)
         pos_proj = pos_proj[:, :3]
         pos_proj[:, 2] = 0.1
         pos_proj_np = pos_proj.detach().cpu().numpy()
@@ -132,7 +130,7 @@ def camera_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
     global racer, current_point
 
     camera_target = read_camera_target_position(emu, device=device)
-    points = project_to_screen(emu, camera_target.unsqueeze(0), device=device)
+    points, _ = project_to_screen(emu, camera_target.unsqueeze(0), device=device)
     points_np = points.detach().cpu().numpy()
     draw_points(points_np, colors=np.array([1.0, 0.0, 0.0]), radius_scale=5.0)
 
@@ -147,16 +145,8 @@ def checkpoint_overlay_1(emu: DeSmuME, device: DeviceLikeType | None = None):
     checkpoint = read_next_checkpoint_position(emu, device=device)
     checkpoint[:, 1] = position[1]
     
-    checkpoint_proj = project_to_screen(emu, checkpoint, device=device)
-    # depth filter 1
-    z_clip = z_clip_mask(checkpoint_proj)
-    checkpoint_proj = checkpoint_proj[z_clip]
-    if checkpoint_proj.shape[0] == 0:
-        return
-    elif checkpoint_proj.shape[0] == 1:
-        p1_np = checkpoint_proj[None, 0, :3].detach().cpu().numpy()
-        
-        draw_points(p1_np, colors=np.array([0.0, 1.0, 0.0]), radius_scale=10.0)
+    checkpoint_proj, _ = project_to_screen(emu, checkpoint, device=device)
+    if checkpoint_proj.shape[0] < 2:
         return
 
     # display depth norm, preserve depth in 3d
@@ -177,11 +167,7 @@ def checkpoint_overlay_2(emu: DeSmuME, device: DeviceLikeType | None = None):
     direction = read_direction(emu, device=device)
     intersect = read_facing_point_checkpoint(emu, direction, device=device)
     intersect = intersect.unsqueeze(0)
-    intersect_proj = project_to_screen(emu, intersect, device=device)
-    z_clip_mask_2 = z_clip_mask(intersect_proj)
-
-    # depth filter 2
-    intersect_proj = intersect_proj[z_clip_mask_2]
+    intersect_proj, _ = project_to_screen(emu, intersect, device=device)
     if intersect_proj.shape[0] == 0:
         return
 
@@ -194,7 +180,7 @@ def checkpoint_overlay_2(emu: DeSmuME, device: DeviceLikeType | None = None):
     draw_points(intersect_proj_np, colors=np.array([0.0, 1.0, 0.0]), radius_scale=1.0)
 
     intersect_proj_np[0, 2] = 0.1
-    pos_proj = project_to_screen(emu, position.unsqueeze(0), device=device)
+    pos_proj, _ = project_to_screen(emu, position.unsqueeze(0), device=device)
     pos_proj = pos_proj[:, :3]
     pos_proj[:, 2] = 0.1
     pos_proj_np = pos_proj.detach().cpu().numpy()
@@ -215,10 +201,10 @@ def player_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
 
         if len(positions) == 0: continue
         positions = torch.stack(positions, dim=0)
-        object_positions = project_to_screen(emu, positions, device=device)
+        object_positions, _ = project_to_screen(emu, positions, device=device)
 
-        z_clip = z_clip_mask(object_positions)
-        object_positions = object_positions[z_clip]
+        
+        
         if object_positions.shape[0] == 0:
             continue
 
@@ -229,4 +215,55 @@ def player_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
         object_positions_np = object_positions.detach().cpu().numpy()
         colors_np = np.array(colors[i])
         draw_points(object_positions_np, colors=colors_np, radius_scale=5.0)
+        
+@register_overlay
+def distance_overlay(emu: DeSmuME, device: DeviceLikeType | None = None):
+    # Computation #
+    driver = read_driver(emu)
+    pos = read_VecFx32(driver.position, device=device)
+    mtx = read_MtxFx32(driver.mainMtx, device)
+    right, _, fwd, _ = torch.chunk(mtx, 4, dim=0)   
+    
+    fwd_p = read_closest_obstacle_point(emu, fwd.squeeze(), device=device) # raycast forward
+    right_p = read_closest_obstacle_point(emu, right.squeeze(), device=device) # raycast right
+    left_p = read_closest_obstacle_point(emu, -right.squeeze(), device=device) # raycast left
+    
+    
+    # Display Logic #
+    pos_proj, _ = project_to_screen(emu, pos.unsqueeze(0), device=device)
+    pos_proj = pos_proj[:, :3]
+    
+    
+    colors = []
+    stack = []
+    if fwd_p is not None:
+        stack.append(fwd_p)
+        colors.append(torch.tensor([0.0, 0.0, 1.0], device=device))
+    if right_p is not None:
+        stack.append(right_p)
+        colors.append(torch.tensor([0.0, 1.0, 0.0], device=device))
+    if left_p is not None:
+        stack.append(left_p)
+        colors.append(torch.tensor([1.0, 0.0, 0.0], device=device))
+        
+    if len(stack) == 0:
+        return
+    
+    p_proj, mask = project_to_screen(emu, torch.stack(stack, dim=0), device=device)
+    p_proj = p_proj[:, :3]
+    
+    if p_proj.shape[0] == 0:
+        return
+    
+    pos_proj = pos_proj.repeat(p_proj.shape[0], 1)
+    pos_proj = pos_proj.detach().cpu().numpy()
+    p_proj = p_proj.detach().cpu().numpy()
+    
+    colors = torch.stack(colors, dim=0)
+    colors = colors[mask]
+    colors = colors.detach().cpu().numpy()
+    
+    draw_lines(pos_proj, p_proj, colors)
+    
+    
     

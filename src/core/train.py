@@ -547,7 +547,7 @@ def get_forward_func(emu: DeSmuME, model: EvolvedNet, device: DeviceLikeType | N
         right_d = read_right_distance_obstacle(emu, device=device, interval=(-0.5, 0.5))
         inputs_dist1 = torch.tensor([forward_d, left_d, right_d], device=device)
         inputs_dist1 = inputs_dist1 < 200
-        print(inputs_dist1)
+        
         # Angular relationship to next checkpoint
         angle = read_direction_to_checkpoint(emu, device=device)
         forward_a = torch.cos(angle)
@@ -558,7 +558,7 @@ def get_forward_func(emu: DeSmuME, model: EvolvedNet, device: DeviceLikeType | N
         # Model inference
         inputs = torch.cat([inputs_dist1, inputs_dist2])
         
-        logits = model(inputs)
+        logits = model(inputs_dist1)
 
         return logits
 
@@ -792,7 +792,7 @@ def train(
     """
     global best_genome
     if load_checkpoint_path is None:
-        pop: list[Genome] = [Genome(6, 2, device=device) for _ in range(pop_size)]
+        pop: list[Genome] = [Genome(3, 2, device=device) for _ in range(pop_size)]
     else:
         pop: list[Genome] = [load_genome(load_checkpoint_path) for _ in range(pop_size)]
     

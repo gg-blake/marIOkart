@@ -13,4 +13,4 @@ package-dir = {"" = "src"}
 
 [tool.setuptools.packages.find]
 where = ["src", "."] # search in both src/ and root
-include = ["core*", "misc*", "utils*", "visualization*", "mkds_extensions*", "private/mkds_python_bindings/generated*", "private/mkds_python_bindings/testing*"]
+include = ["core*", "misc*", "utils*", "visualization*", "mkds_extensions*", "private*"]
