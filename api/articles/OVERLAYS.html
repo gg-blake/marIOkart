@@ -1,0 +1,756 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="MKDS Emulator I/O &amp; Geometry Utilities" href="READING_MEMORY.html"><link rel="prev" title="Research Articles" href="articles.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>MKDS Overlay System — Extensible Overlays for Mario Kart DS - MarI/O Kart documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../index.html"><div class="brand">MarI/O Kart  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  
+  <span class="sidebar-brand-text">MarI/O Kart  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1 current has-children"><a class="reference internal" href="articles.html">Research Articles</a><input aria-label="Toggle navigation of Research Articles" checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul class="current">
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">MKDS Overlay System — Extensible Overlays for Mario Kart DS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="READING_MEMORY.html">MKDS Emulator I/O &amp; Geometry Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="READING_FILES.html"><code class="docutils literal notranslate"><span class="pre">mkds</span></code> — Mario Kart DS NKM &amp; KCL Readers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../src.core.html">src.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src.mkds_extensions.html">src.mkds_extensions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src.utils.html">src.utils package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../src.visualization.html">src.visualization package</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../mkds.html">MKDS File Parsing Library</a><input aria-label="Toggle navigation of MKDS File Parsing Library" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../mkds/nkm.html">mkds.nkm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mkds/kcl.html">mkds.kcl module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../mkds/utils.html">mkds.utils module</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="view-this-page">
+  <a class="muted-link" href="../../_sources/api/articles/OVERLAYS.md.txt" title="View this page">
+    <svg><use href="#svg-eye"></use></svg>
+    <span class="visually-hidden">View this page</span>
+  </a>
+</div>
+<div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <section id="mkds-overlay-system-extensible-overlays-for-mario-kart-ds">
+<span id="id1"></span><h1>MKDS Overlay System — Extensible Overlays for Mario Kart DS<a class="headerlink" href="#mkds-overlay-system-extensible-overlays-for-mario-kart-ds" title="Link to this heading">¶</a></h1>
+<blockquote>
+<div><p><strong>Composable overlay framework for the DeSmuME renderer.</strong><br />
+Compute geometry from live emulator memory, project to screen space, and enqueue drawing primitives for a GTK/Cairo render loop. Easily add your own overlays by writing a single <code class="docutils literal notranslate"><span class="pre">overlay(emu,</span> <span class="pre">device)</span></code> function.</p>
+</div></blockquote>
+<ul class="simple">
+<li><p><strong>Focus:</strong> Overlays (<code class="docutils literal notranslate"><span class="pre">utils/overlay.py</span></code>) and drawing stack (<code class="docutils literal notranslate"><span class="pre">utils/draw.py</span></code>)</p></li>
+<li><p><strong>Renderer example:</strong> <code class="docutils literal notranslate"><span class="pre">main.py</span></code> (GTK window &amp; render loop integration)</p></li>
+</ul>
+<hr class="docutils" />
+<section id="table-of-contents">
+<h2>Table of Contents<a class="headerlink" href="#table-of-contents" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><a class="reference internal" href="#overview">Overview</a></p></li>
+<li><p><a class="reference internal" href="#how-it-works">How It Works</a></p>
+<ul>
+<li><p><a class="reference internal" href="#execution-flow">Execution Flow</a></p></li>
+<li><p><a class="reference internal" href="#threading-model">Threading Model</a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#getting-started">Getting Started</a></p></li>
+<li><p><a class="reference internal" href="#coordinate-system-screen-space">Coordinate System &amp; Screen Space</a></p></li>
+<li><p><a class="reference internal" href="#overlay-api-built-ins">Overlay API (Built-ins)</a></p>
+<ul>
+<li><p><a class="reference internal" href="#collision-overlay"><code class="docutils literal notranslate"><span class="pre">collision_overlay</span></code></a></p></li>
+<li><p><a class="reference internal" href="#raycasting-overlay"><code class="docutils literal notranslate"><span class="pre">raycasting_overlay</span></code></a></p></li>
+<li><p><a class="reference internal" href="#camera-overlay"><code class="docutils literal notranslate"><span class="pre">camera_overlay</span></code></a></p></li>
+<li><p><a class="reference internal" href="#checkpoint-overlay-1"><code class="docutils literal notranslate"><span class="pre">checkpoint_overlay_1</span></code></a></p></li>
+<li><p><a class="reference internal" href="#checkpoint-overlay-2"><code class="docutils literal notranslate"><span class="pre">checkpoint_overlay_2</span></code></a></p></li>
+<li><p><a class="reference internal" href="#player-overlay"><code class="docutils literal notranslate"><span class="pre">player_overlay</span></code></a></p></li>
+<li><p><a class="reference internal" href="#stats-overlay"><code class="docutils literal notranslate"><span class="pre">stats_overlay</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#drawing-primitives-queue">Drawing Primitives &amp; Queue</a></p>
+<ul>
+<li><p><a class="reference internal" href="#draw-points"><code class="docutils literal notranslate"><span class="pre">draw_points</span></code></a></p></li>
+<li><p><a class="reference internal" href="#draw-lines"><code class="docutils literal notranslate"><span class="pre">draw_lines</span></code></a></p></li>
+<li><p><a class="reference internal" href="#draw-triangles"><code class="docutils literal notranslate"><span class="pre">draw_triangles</span></code></a></p></li>
+<li><p><a class="reference internal" href="#draw-text"><code class="docutils literal notranslate"><span class="pre">draw_text</span></code></a></p></li>
+<li><p><a class="reference internal" href="#draw-paragraph"><code class="docutils literal notranslate"><span class="pre">draw_paragraph</span></code></a></p></li>
+<li><p><a class="reference internal" href="#consume-draw-stack"><code class="docutils literal notranslate"><span class="pre">consume_draw_stack</span></code></a></p></li>
+<li><p><a class="reference internal" href="#decorator-draw-stack-op">Decorator: <code class="docutils literal notranslate"><span class="pre">draw_stack_op</span></code></a></p></li>
+</ul>
+</li>
+<li><p><a class="reference internal" href="#creating-your-own-overlay">Creating Your Own Overlay</a></p></li>
+<li><p><a class="reference internal" href="#integration-example-gtk">Integration Example (GTK)</a></p></li>
+<li><p><a class="reference internal" href="#performance-notes">Performance Notes</a></p></li>
+<li><p><a class="reference internal" href="#faq">FAQ</a></p></li>
+<li><p><a class="reference internal" href="#license">License</a></p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="overview">
+<span id="id2"></span><h2>Overview<a class="headerlink" href="#overview" title="Link to this heading">¶</a></h2>
+<p>The overlay system is designed to be <strong>highly extensible</strong>: write small, pure functions that read live game state from the emulator, project points to <strong>screen space (256×192)</strong>, and enqueue Cairo drawing operations. The GTK renderer consumes those operations on each <code class="docutils literal notranslate"><span class="pre">draw</span></code> event, layering them over the emulator frame.</p>
+<p>Core pieces:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">utils/overlay.py</span></code>: A set of example overlays showing best practices.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">utils/draw.py</span></code>: A composable <strong>draw-queue</strong> built on a Cairo <code class="docutils literal notranslate"><span class="pre">Context</span></code> and a decorator to enqueue draw calls from any thread.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">main.py</span></code>: A concrete GTK + DeSmuME render loop showing how to plug in overlays.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="how-it-works">
+<span id="id3"></span><h2>How It Works<a class="headerlink" href="#how-it-works" title="Link to this heading">¶</a></h2>
+<section id="execution-flow">
+<span id="id4"></span><h3>Execution Flow<a class="headerlink" href="#execution-flow" title="Link to this heading">¶</a></h3>
+<ol class="arabic simple">
+<li><p><strong>Emulator tick</strong>: <code class="docutils literal notranslate"><span class="pre">emu.cycle()</span></code> advances the game by one frame.</p></li>
+<li><p><strong>Overlay evaluation</strong> (worker thread): Each overlay (<code class="docutils literal notranslate"><span class="pre">overlay(emu,</span> <span class="pre">device)</span></code>) reads memory, computes geometry, projects to screen, and <strong>enqueues</strong> draw ops via <code class="docutils literal notranslate"><span class="pre">draw_*</span></code> helpers.</p></li>
+<li><p><strong>GTK draw event</strong> (UI thread): <code class="docutils literal notranslate"><span class="pre">on_draw_main</span></code> calls <code class="docutils literal notranslate"><span class="pre">consume_draw_stack(ctx)</span></code>, which dequeues closures and draws them onto a transparent overlay surface. That surface is composited over the emulator screen.</p></li>
+</ol>
+</section>
+<section id="threading-model">
+<span id="id5"></span><h3>Threading Model<a class="headerlink" href="#threading-model" title="Link to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Overlays typically run in a <strong>worker thread</strong> (see <code class="docutils literal notranslate"><span class="pre">worker()</span></code> and the <code class="docutils literal notranslate"><span class="pre">tick()</span></code> in <code class="docutils literal notranslate"><span class="pre">main.py</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">draw_queue</span></code> is a thread-safe <code class="docutils literal notranslate"><span class="pre">queue.Queue</span></code>; decorated <code class="docutils literal notranslate"><span class="pre">draw_*</span></code> functions push <strong>closures</strong> that will be executed later in the GTK thread with a Cairo <code class="docutils literal notranslate"><span class="pre">Context</span></code>.</p></li>
+<li><p>The GTK <code class="docutils literal notranslate"><span class="pre">draw</span></code> callback maintains an <strong>overlay surface cache</strong> to reuse the last overlay frame when no new draw ops were enqueued (reduces flicker and work).</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="getting-started">
+<span id="id6"></span><h2>Getting Started<a class="headerlink" href="#getting-started" title="Link to this heading">¶</a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">utils.overlay</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">collision_overlay</span><span class="p">,</span>
+    <span class="n">checkpoint_overlay_1</span><span class="p">,</span> <span class="n">checkpoint_overlay_2</span><span class="p">,</span>
+    <span class="n">player_overlay</span><span class="p">,</span> <span class="n">raycasting_overlay</span><span class="p">,</span> <span class="n">camera_overlay</span><span class="p">,</span>
+    <span class="n">stats_overlay</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># In your run loop, pass a list of overlays:</span>
+<span class="n">run_emulator</span><span class="p">(</span>
+    <span class="n">generate_trainer</span><span class="p">,</span>
+    <span class="p">[</span>
+        <span class="n">collision_overlay</span><span class="p">,</span>
+        <span class="n">checkpoint_overlay_1</span><span class="p">,</span>
+        <span class="n">checkpoint_overlay_2</span><span class="p">,</span>
+        <span class="c1"># player_overlay,</span>
+        <span class="c1"># raycasting_overlay,</span>
+        <span class="c1"># camera_overlay,</span>
+        <span class="c1"># stats_overlay,   # example: queue text/numbers</span>
+    <span class="p">],</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<blockquote>
+<div><p>Each overlay is called like <code class="docutils literal notranslate"><span class="pre">overlay(emu,</span> <span class="pre">device)</span></code> and should <strong>only enqueue</strong> draw ops. It must not block.</p>
+</div></blockquote>
+<hr class="docutils" />
+</section>
+<section id="coordinate-system-screen-space">
+<span id="id7"></span><h2>Coordinate System &amp; Screen Space<a class="headerlink" href="#coordinate-system-screen-space" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>World space</strong> follows MKDS conventions (Y-up).</p></li>
+<li><p><strong>Screen space</strong> is <strong>256×192</strong> pixels; origin at <strong>top-left</strong> (X→right, Y→down).</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">project_to_screen(emu,</span> <span class="pre">points,</span> <span class="pre">device)</span></code> to map <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code> world coordinates → <code class="docutils literal notranslate"><span class="pre">(N,4)</span></code> screen data <code class="docutils literal notranslate"><span class="pre">[x_px,</span> <span class="pre">y_px,</span> <span class="pre">clip_z,</span> <span class="pre">depth_norm]</span></code>.</p></li>
+<li><p>Use <code class="docutils literal notranslate"><span class="pre">z_clip_mask(screen_tensor)</span></code> to cull points outside near/far planes: <code class="docutils literal notranslate"><span class="pre">(clip_z</span> <span class="pre">&lt;</span> <span class="pre">-Z_NEAR)</span> <span class="pre">&amp;</span> <span class="pre">(clip_z</span> <span class="pre">&gt;</span> <span class="pre">-Z_FAR)</span></code>.</p></li>
+<li><p>Most overlays export the <strong>third channel</strong> in <code class="docutils literal notranslate"><span class="pre">draw_points</span></code>/<code class="docutils literal notranslate"><span class="pre">draw_lines</span></code> buffers as a <em>scale/depth</em> dimension used by the primitive (see below).</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="overlay-api-built-ins">
+<span id="id8"></span><h2>Overlay API (Built-ins)<a class="headerlink" href="#overlay-api-built-ins" title="Link to this heading">¶</a></h2>
+<blockquote>
+<div><p>All overlays follow the signature: <code class="docutils literal notranslate"><span class="pre">overlay(emu:</span> <span class="pre">DeSmuME,</span> <span class="pre">device=None)</span> <span class="pre">-&gt;</span> <span class="pre">None</span></code>.</p>
+</div></blockquote>
+<section id="collision-overlay">
+<span id="id9"></span><h3><code class="docutils literal notranslate"><span class="pre">collision_overlay</span></code><a class="headerlink" href="#collision-overlay" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Draw edges of collision triangles around the player, colored by attribute (walls and offroad types).</p>
+<p><strong>Flow:</strong></p>
+<ol class="arabic simple">
+<li><p>Load KCL (<code class="docutils literal notranslate"><span class="pre">load_current_kcl</span></code>) and player <code class="docutils literal notranslate"><span class="pre">position</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">indices</span> <span class="pre">=</span> <span class="pre">kcl.search_triangles(position)</span></code> finds nearby triangle indices (octree leaf).</p></li>
+<li><p>Filter by attributes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">is_wall</span></code> → magenta <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">1)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">collision_type</span> <span class="pre">in</span> <span class="pre">{2,3,5}</span></code> (offroad) → pink <code class="docutils literal notranslate"><span class="pre">(1,</span> <span class="pre">0,</span> <span class="pre">0.3)</span></code></p></li>
+</ul>
+</li>
+<li><p>Project triangle vertices <code class="docutils literal notranslate"><span class="pre">v1,</span> <span class="pre">v2,</span> <span class="pre">v3</span></code> to screen; <strong>z-clip</strong>, then emit edges via <code class="docutils literal notranslate"><span class="pre">draw_triangles</span></code>.</p></li>
+</ol>
+<p><strong>Notes:</strong></p>
+<ul class="simple">
+<li><p>Third component passed to draw is the <strong>normalized depth</strong> (used for stylized scaling).</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="raycasting-overlay">
+<span id="id10"></span><h3><code class="docutils literal notranslate"><span class="pre">raycasting_overlay</span></code><a class="headerlink" href="#raycasting-overlay" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Demonstrate dynamic raycasting to the nearest obstacle in front of the kart, smoothing the intersection point over time.</p>
+<p><strong>Flow:</strong></p>
+<ol class="arabic simple">
+<li><p>Read player <code class="docutils literal notranslate"><span class="pre">position</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">read_facing_point_obstacle</span></code> samples a <strong>cone</strong> of rays to find the nearest hit (walls/offroad).</p></li>
+<li><p>Smooth a global <code class="docutils literal notranslate"><span class="pre">current_point</span></code> toward the latest hit via <code class="docutils literal notranslate"><span class="pre">interpolate</span></code> (0.1 factor).</p></li>
+<li><p>Compute forward/left/right distances for logging or additional overlays.</p></li>
+</ol>
+<p><strong>Notes:</strong></p>
+<ul class="simple">
+<li><p>This overlay <strong>does not draw</strong> by itself; it prepares values for other overlays or logs. Add your own <code class="docutils literal notranslate"><span class="pre">draw_points</span></code> if desired.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="camera-overlay">
+<span id="id11"></span><h3><code class="docutils literal notranslate"><span class="pre">camera_overlay</span></code><a class="headerlink" href="#camera-overlay" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Visualize the current <strong>camera target</strong> position.</p>
+<p><strong>Flow:</strong></p>
+<ol class="arabic simple">
+<li><p>Read <code class="docutils literal notranslate"><span class="pre">read_camera_target_position</span></code>.</p></li>
+<li><p>Project to screen and plot a red point via <code class="docutils literal notranslate"><span class="pre">draw_points</span></code> (larger radius).</p></li>
+</ol>
+<hr class="docutils" />
+</section>
+<section id="checkpoint-overlay-1">
+<span id="id12"></span><h3><code class="docutils literal notranslate"><span class="pre">checkpoint_overlay_1</span></code><a class="headerlink" href="#checkpoint-overlay-1" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Draw a <strong>line segment</strong> between the two endpoints of the <strong>next checkpoint</strong>, aligned to the player’s current Y (so it’s visible in 2D screen space).</p>
+<p><strong>Flow:</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">read_next_checkpoint_position</span></code> → <code class="docutils literal notranslate"><span class="pre">(2,3)</span></code> endpoints.</p></li>
+<li><p>Replace endpoints’ Y with player Y (visual flattening).</p></li>
+<li><p>Project to screen, <strong>z-clip</strong>; if one endpoint remains, draw a single green dot.</p></li>
+<li><p>Otherwise, concat <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">depth_norm,</span> <span class="pre">clip_z]</span></code> and emit via <code class="docutils literal notranslate"><span class="pre">draw_lines</span></code> (green).</p></li>
+</ol>
+<hr class="docutils" />
+</section>
+<section id="checkpoint-overlay-2">
+<span id="id13"></span><h3><code class="docutils literal notranslate"><span class="pre">checkpoint_overlay_2</span></code><a class="headerlink" href="#checkpoint-overlay-2" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Draw a <strong>ray</strong> from the kart to its intersection with the next checkpoint boundary.</p>
+<p><strong>Flow:</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">read_direction</span></code> and <code class="docutils literal notranslate"><span class="pre">read_facing_point_checkpoint</span></code> → intersection point.</p></li>
+<li><p>Project intersection to screen, z-clip, and draw a green point.</p></li>
+<li><p>Project current player position, normalize both to a small Z for visibility, and draw a <strong>blue line</strong> from kart → intersection.</p></li>
+</ol>
+<hr class="docutils" />
+</section>
+<section id="player-overlay">
+<span id="id14"></span><h3><code class="docutils literal notranslate"><span class="pre">player_overlay</span></code><a class="headerlink" href="#player-overlay" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Scatter-plot visible objects by category: <code class="docutils literal notranslate"><span class="pre">map_objects</span></code>, <code class="docutils literal notranslate"><span class="pre">racer_objects</span></code>, <code class="docutils literal notranslate"><span class="pre">item_objects</span></code>, <code class="docutils literal notranslate"><span class="pre">dynamic_objects</span></code>.</p>
+<p><strong>Flow:</strong></p>
+<ol class="arabic simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">read_objects()</span></code> groups object IDs by flags.</p></li>
+<li><p>For each group, collect positions with <code class="docutils literal notranslate"><span class="pre">read_object_position</span></code> (skips deleted/ignored via <code class="docutils literal notranslate"><span class="pre">safe_object</span></code>).</p></li>
+<li><p>Project to screen, z-clip, and draw points in group color.</p></li>
+</ol>
+<p><strong>Notes:</strong></p>
+<ul class="simple">
+<li><p>Uses four palette colors; colors broadcast to all points per group.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="stats-overlay">
+<span id="id15"></span><h3><code class="docutils literal notranslate"><span class="pre">stats_overlay</span></code><a class="headerlink" href="#stats-overlay" title="Link to this heading">¶</a></h3>
+<p><strong>Purpose:</strong> Example overlay that reads stats <strong>without drawing</strong> (clock, forward distances). In the GTK example, textual stats are drawn in the <code class="docutils literal notranslate"><span class="pre">on_draw_main</span></code> callback using <code class="docutils literal notranslate"><span class="pre">draw_paragraph</span></code> directly (outside the queue).</p>
+<p><strong>Suggested:</strong> Convert to overlay by formatting stats and calling <code class="docutils literal notranslate"><span class="pre">draw_paragraph</span></code> to enqueue text if you prefer everything in the queue.</p>
+<hr class="docutils" />
+</section>
+</section>
+<section id="drawing-primitives-queue">
+<span id="id16"></span><h2>Drawing Primitives &amp; Queue<a class="headerlink" href="#drawing-primitives-queue" title="Link to this heading">¶</a></h2>
+<p>All drawing helpers live in <code class="docutils literal notranslate"><span class="pre">utils/draw.py</span></code>. They do <strong>not</strong> draw immediately. Instead, they’re decorated with <code class="docutils literal notranslate"><span class="pre">&#64;draw_stack_op</span></code>, so calling them enqueues a closure that will be executed with a Cairo <code class="docutils literal notranslate"><span class="pre">Context</span></code> in the GTK draw thread.</p>
+<section id="draw-points">
+<span id="id17"></span><h3><code class="docutils literal notranslate"><span class="pre">draw_points</span></code><a class="headerlink" href="#draw-points" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">draw_points</span><span class="p">(</span><span class="n">pts</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">colors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">radius_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Inputs:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pts</span></code>: shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> → <code class="docutils literal notranslate"><span class="pre">[x_px,</span> <span class="pre">y_px,</span> <span class="pre">z]</span></code></p>
+<ul>
+<li><p><strong><code class="docutils literal notranslate"><span class="pre">z</span></code></strong> acts as a scale factor for the dot radius: <code class="docutils literal notranslate"><span class="pre">radius</span> <span class="pre">=</span> <span class="pre">radius_scale</span> <span class="pre">*</span> <span class="pre">z</span></code></p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colors</span></code>: shape <code class="docutils literal notranslate"><span class="pre">(N,</span> <span class="pre">3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> in <strong>[0,1] RGB</strong>; single color is broadcast to all points.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">radius_scale</span></code>: typically a <strong>float</strong>. (Per-point arrays are not currently indexed per row.)</p></li>
+</ul>
+</li>
+<li><p><strong>Behavior:</strong> Fills a disk at each point.</p></li>
+</ul>
+</section>
+<section id="draw-lines">
+<span id="id18"></span><h3><code class="docutils literal notranslate"><span class="pre">draw_lines</span></code><a class="headerlink" href="#draw-lines" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">draw_lines</span><span class="p">(</span><span class="n">pts1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pts2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">colors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">stroke_width_scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Inputs:</strong></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">pts1</span></code>, <code class="docutils literal notranslate"><span class="pre">pts2</span></code>: shapes <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,)</span></code>. Only <strong>X,Y</strong> are used for line endpoints.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">colors</span></code>: <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code> or <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> RGB; single color broadcasts.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">stroke_width_scale</span></code>: Cairo line width.</p></li>
+</ul>
+</li>
+<li><p><strong>Behavior:</strong> Draws segments <code class="docutils literal notranslate"><span class="pre">pts1[i]</span> <span class="pre">→</span> <span class="pre">pts2[i]</span></code> per batch entry.</p></li>
+</ul>
+</section>
+<section id="draw-triangles">
+<span id="id19"></span><h3><code class="docutils literal notranslate"><span class="pre">draw_triangles</span></code><a class="headerlink" href="#draw-triangles" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">draw_triangles</span><span class="p">(</span><span class="n">pts1</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pts2</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">pts3</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">colors</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>Inputs:</strong> Three point arrays, shape <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code> each. <code class="docutils literal notranslate"><span class="pre">colors</span></code> is <code class="docutils literal notranslate"><span class="pre">(3,)</span></code> or <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code> RGB.</p></li>
+<li><p><strong>Behavior:</strong> Renders triangle <strong>edges</strong> by internally enqueuing three <code class="docutils literal notranslate"><span class="pre">draw_lines</span></code> calls (one per edge).</p></li>
+</ul>
+</section>
+<section id="draw-text">
+<span id="id20"></span><h3><code class="docutils literal notranslate"><span class="pre">draw_text</span></code><a class="headerlink" href="#draw-text" title="Link to this heading">¶</a></h3>
+<p>Immediate text drawing helper (not queued).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">draw_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">g</span><span class="p">,</span><span class="n">b</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">font_size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">font_family</span><span class="o">=</span><span class="s2">&quot;Sans&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Use directly in a Cairo context (e.g., from <code class="docutils literal notranslate"><span class="pre">on_draw_main</span></code>) for HUD-like text that you want to render <strong>every frame</strong>.</p></li>
+</ul>
+</section>
+<section id="draw-paragraph">
+<span id="id21"></span><h3><code class="docutils literal notranslate"><span class="pre">draw_paragraph</span></code><a class="headerlink" href="#draw-paragraph" title="Link to this heading">¶</a></h3>
+<p>Immediate block text (multiple lines).</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">draw_paragraph</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span> <span class="n">color</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">font_size</span><span class="p">,</span> <span class="n">vertical_spacing</span><span class="p">,</span> <span class="n">font_family</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="consume-draw-stack">
+<span id="id22"></span><h3><code class="docutils literal notranslate"><span class="pre">consume_draw_stack</span></code><a class="headerlink" href="#consume-draw-stack" title="Link to this heading">¶</a></h3>
+<p>Consume and execute up to <code class="docutils literal notranslate"><span class="pre">max_items</span></code> enqueued draw operations.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">num</span> <span class="o">=</span> <span class="n">consume_draw_stack</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">cairo</span><span class="o">.</span><span class="n">Context</span><span class="p">,</span> <span class="n">max_items</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Returns the number of ops executed.</p></li>
+<li><p>Use from the GTK draw callback to render overlays on a transparent surface.</p></li>
+</ul>
+</section>
+<section id="decorator-draw-stack-op">
+<span id="id23"></span><h3>Decorator: <code class="docutils literal notranslate"><span class="pre">draw_stack_op</span></code><a class="headerlink" href="#decorator-draw-stack-op" title="Link to this heading">¶</a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="nd">@draw_stack_op</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_points</span><span class="p">(</span><span class="n">ctx</span><span class="p">:</span> <span class="n">Context</span><span class="p">,</span> <span class="o">...</span><span class="p">):</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Wraps a function of shape <code class="docutils literal notranslate"><span class="pre">(ctx,</span> <span class="pre">*args)</span></code> into an <strong>enqueuer</strong> that accepts <code class="docutils literal notranslate"><span class="pre">*args</span></code> <strong>now</strong> and pushes a closure to call the original with a Cairo <code class="docutils literal notranslate"><span class="pre">Context</span></code> <strong>later</strong>.</p></li>
+<li><p>This decouples CPU-side geometry work from UI-thread rendering.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+</section>
+<section id="creating-your-own-overlay">
+<span id="id24"></span><h2>Creating Your Own Overlay<a class="headerlink" href="#creating-your-own-overlay" title="Link to this heading">¶</a></h2>
+<p>An overlay is a simple function:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils.draw</span><span class="w"> </span><span class="kn">import</span> <span class="n">draw_points</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">utils.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_position</span><span class="p">,</span> <span class="n">project_to_screen</span><span class="p">,</span> <span class="n">z_clip_mask</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">my_overlay</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="c1"># 1) Read from emulator</span>
+    <span class="n">pos</span> <span class="o">=</span> <span class="n">read_position</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># (1,3)</span>
+
+    <span class="c1"># 2) Project to screen</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">project_to_screen</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>       <span class="c1"># (1,4) [x,y,clip_z,depth_norm]</span>
+
+    <span class="c1"># 3) Depth cull</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">z_clip_mask</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span>
+    <span class="n">sp</span> <span class="o">=</span> <span class="n">sp</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">sp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c1"># 4) Prepare np arrays (x, y, depth_norm) and color</span>
+    <span class="n">pts</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">sp</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">sp</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">,</span> <span class="kc">None</span><span class="p">]],</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="n">color</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">])</span>
+
+    <span class="c1"># 5) Enqueue draw op</span>
+    <span class="n">draw_points</span><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">radius_scale</span><span class="o">=</span><span class="mf">6.0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Tips:</strong></p>
+<ul class="simple">
+<li><p><strong>Never block</strong> in overlays. Do reads/computation; enqueue and return.</p></li>
+<li><p><strong>Convert to NumPy</strong> right before enqueuing (<code class="docutils literal notranslate"><span class="pre">.detach().cpu().numpy()</span></code>).</p></li>
+<li><p><strong>Use <code class="docutils literal notranslate"><span class="pre">z_clip_mask</span></code></strong> after projection to avoid drawing behind-camera artifacts.</p></li>
+<li><p>To draw edges, prepare two <code class="docutils literal notranslate"><span class="pre">(N,3)</span></code> arrays <code class="docutils literal notranslate"><span class="pre">(pts1,</span> <span class="pre">pts2)</span></code> and call <code class="docutils literal notranslate"><span class="pre">draw_lines</span></code>.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="integration-example-gtk">
+<span id="id25"></span><h2>Integration Example (GTK)<a class="headerlink" href="#integration-example-gtk" title="Link to this heading">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">main.py</span></code> shows a complete integration with GTK and DeSmuME:</p>
+<ul class="simple">
+<li><p>Creates an <code class="docutils literal notranslate"><span class="pre">EmulatorWindow</span></code> with a <code class="docutils literal notranslate"><span class="pre">Gtk.DrawingArea</span></code> scaled by <code class="docutils literal notranslate"><span class="pre">SCALE</span></code>.</p></li>
+<li><p>On each <code class="docutils literal notranslate"><span class="pre">draw</span></code>:</p>
+<ul>
+<li><p>Renders the emulator frame into the Cairo target.</p></li>
+<li><p>Creates a <strong>transparent overlay surface</strong>, clears it, then calls <code class="docutils literal notranslate"><span class="pre">consume_draw_stack(overlay_ctx)</span></code>.</p></li>
+<li><p>Caches the overlay surface when <strong>no draws</strong> occurred (saves work).</p></li>
+<li><p>Composites the overlay over the emulator frame via <code class="docutils literal notranslate"><span class="pre">cairo.OPERATOR_OVER</span></code>.</p></li>
+<li><p>Optionally draws HUD text via <code class="docutils literal notranslate"><span class="pre">draw_paragraph</span></code> (immediate helper).</p></li>
+</ul>
+</li>
+<li><p>A timed callback (<code class="docutils literal notranslate"><span class="pre">GLib.timeout_add(16,</span> <span class="pre">tick)</span></code>) advances the emulator at ~60 FPS, pushes the current <code class="docutils literal notranslate"><span class="pre">emu</span></code> into the worker queue, and schedules a redraw.</p></li>
+<li><p>The worker thread pulls <code class="docutils literal notranslate"><span class="pre">emu</span></code> and runs each overlay in order, enqueuing draw ops via the queue-safe decorators.</p></li>
+</ul>
+<p><strong>Key bindings:</strong> Mapped to DS keys via <code class="docutils literal notranslate"><span class="pre">pynput</span></code> and <code class="docutils literal notranslate"><span class="pre">desmume.controls</span></code> (see <code class="docutils literal notranslate"><span class="pre">KEY_MAP</span></code>).</p>
+<hr class="docutils" />
+</section>
+<section id="performance-notes">
+<span id="id26"></span><h2>Performance Notes<a class="headerlink" href="#performance-notes" title="Link to this heading">¶</a></h2>
+<ul class="simple">
+<li><p><strong>Minimize device↔host transfers</strong>: keep tensors on device during math; transfer to CPU only when creating NumPy arrays for drawing.</p></li>
+<li><p><strong>Cull early</strong>: use <code class="docutils literal notranslate"><span class="pre">z_clip_mask</span></code> prior to NumPy conversion.</p></li>
+<li><p><strong>Batch operations</strong>: project arrays of points at once; avoid per-point projection.</p></li>
+<li><p><strong>Overlay surface cache</strong>: already implemented — reuses last overlay frame when nothing changed.</p></li>
+<li><p><strong>No anti-aliasing</strong>: overlay uses <code class="docutils literal notranslate"><span class="pre">cairo.ANTIALIAS_NONE</span></code> and <code class="docutils literal notranslate"><span class="pre">FILTER_NEAREST</span></code> to preserve the DS aesthetic.</p></li>
+</ul>
+<hr class="docutils" />
+</section>
+<section id="faq">
+<span id="id27"></span><h2>FAQ<a class="headerlink" href="#faq" title="Link to this heading">¶</a></h2>
+<p><strong>Q: Do I need to call <code class="docutils literal notranslate"><span class="pre">draw_*</span></code> with a Cairo context?</strong><br />
+A: No. The decorator enqueues a closure; the GTK thread supplies the <code class="docutils literal notranslate"><span class="pre">Context</span></code> later.</p>
+<p><strong>Q: Why does <code class="docutils literal notranslate"><span class="pre">draw_points</span></code> use the 3rd channel of <code class="docutils literal notranslate"><span class="pre">pts</span></code>?</strong><br />
+A: It scales the point radius (<code class="docutils literal notranslate"><span class="pre">radius_scale</span> <span class="pre">*</span> <span class="pre">z</span></code>) to hint depth/parallax. For fixed-size markers, pass a constant <code class="docutils literal notranslate"><span class="pre">z=1</span></code> per point.</p>
+<p><strong>Q: Can I pass per-point radii?</strong><br />
+A: The current implementation expects a <strong>float</strong> <code class="docutils literal notranslate"><span class="pre">radius_scale</span></code>; per-point scaling isn’t indexed per row. If you need it, extend the function to accept a per-point array and index it inside the loop.</p>
+<p><strong>Q: Where do <code class="docutils literal notranslate"><span class="pre">project_to_screen</span></code>, <code class="docutils literal notranslate"><span class="pre">z_clip_mask</span></code>, etc. come from?</strong><br />
+A: They’re provided by the memory/geometry utilities (<code class="docutils literal notranslate"><span class="pre">utils.memory</span></code>), which wrap camera pose reads and projection math.</p>
+<p><strong>Q: What if my overlay needs previous-frame state?</strong><br />
+A: Use module-level globals (as <code class="docutils literal notranslate"><span class="pre">raycasting_overlay</span></code> does with <code class="docutils literal notranslate"><span class="pre">current_point</span></code>) or keep a small state object; be mindful of the worker thread context.</p>
+<hr class="docutils" />
+</section>
+<section id="license">
+<span id="id28"></span><h2>License<a class="headerlink" href="#license" title="Link to this heading">¶</a></h2>
+<p>This overlay system documentation is part of the project repository. See <code class="docutils literal notranslate"><span class="pre">LICENSE</span></code> in the repo root for terms.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="READING_MEMORY.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">MKDS Emulator I/O &amp; Geometry Utilities</div>
+              </div>
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="articles.html">
+              <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Research Articles</div>
+                
+              </div>
+            </a>
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Blake Moody
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">MKDS Overlay System — Extensible Overlays for Mario Kart DS</a><ul>
+<li><a class="reference internal" href="#table-of-contents">Table of Contents</a></li>
+<li><a class="reference internal" href="#overview">Overview</a></li>
+<li><a class="reference internal" href="#how-it-works">How It Works</a><ul>
+<li><a class="reference internal" href="#execution-flow">Execution Flow</a></li>
+<li><a class="reference internal" href="#threading-model">Threading Model</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#coordinate-system-screen-space">Coordinate System &amp; Screen Space</a></li>
+<li><a class="reference internal" href="#overlay-api-built-ins">Overlay API (Built-ins)</a><ul>
+<li><a class="reference internal" href="#collision-overlay"><code class="docutils literal notranslate"><span class="pre">collision_overlay</span></code></a></li>
+<li><a class="reference internal" href="#raycasting-overlay"><code class="docutils literal notranslate"><span class="pre">raycasting_overlay</span></code></a></li>
+<li><a class="reference internal" href="#camera-overlay"><code class="docutils literal notranslate"><span class="pre">camera_overlay</span></code></a></li>
+<li><a class="reference internal" href="#checkpoint-overlay-1"><code class="docutils literal notranslate"><span class="pre">checkpoint_overlay_1</span></code></a></li>
+<li><a class="reference internal" href="#checkpoint-overlay-2"><code class="docutils literal notranslate"><span class="pre">checkpoint_overlay_2</span></code></a></li>
+<li><a class="reference internal" href="#player-overlay"><code class="docutils literal notranslate"><span class="pre">player_overlay</span></code></a></li>
+<li><a class="reference internal" href="#stats-overlay"><code class="docutils literal notranslate"><span class="pre">stats_overlay</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#drawing-primitives-queue">Drawing Primitives &amp; Queue</a><ul>
+<li><a class="reference internal" href="#draw-points"><code class="docutils literal notranslate"><span class="pre">draw_points</span></code></a></li>
+<li><a class="reference internal" href="#draw-lines"><code class="docutils literal notranslate"><span class="pre">draw_lines</span></code></a></li>
+<li><a class="reference internal" href="#draw-triangles"><code class="docutils literal notranslate"><span class="pre">draw_triangles</span></code></a></li>
+<li><a class="reference internal" href="#draw-text"><code class="docutils literal notranslate"><span class="pre">draw_text</span></code></a></li>
+<li><a class="reference internal" href="#draw-paragraph"><code class="docutils literal notranslate"><span class="pre">draw_paragraph</span></code></a></li>
+<li><a class="reference internal" href="#consume-draw-stack"><code class="docutils literal notranslate"><span class="pre">consume_draw_stack</span></code></a></li>
+<li><a class="reference internal" href="#decorator-draw-stack-op">Decorator: <code class="docutils literal notranslate"><span class="pre">draw_stack_op</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#creating-your-own-overlay">Creating Your Own Overlay</a></li>
+<li><a class="reference internal" href="#integration-example-gtk">Integration Example (GTK)</a></li>
+<li><a class="reference internal" href="#performance-notes">Performance Notes</a></li>
+<li><a class="reference internal" href="#faq">FAQ</a></li>
+<li><a class="reference internal" href="#license">License</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>

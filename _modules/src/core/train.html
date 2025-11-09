@@ -1,0 +1,1243 @@
+<!doctype html>
+<html class="no-js" lang="en" data-content_root="../../../">
+  <head><meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html"><link rel="search" title="Search" href="../../../search.html">
+
+    <!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
+        <title>src.core.train - MarI/O Kart documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=d111a655" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=580074bf" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo-extensions.css?v=8dab3a3b" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f2f2f2;
+  --color-code-foreground: #1e1e1e;
+  
+  }
+  @media not print {
+    body[data-theme="dark"] {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+    @media (prefers-color-scheme: dark) {
+      body:not([data-theme="light"]) {
+        --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+      }
+    }
+  }
+</style></head>
+  <body>
+    
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 1024 1024">
+      <path d="M408 442h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8zm-8 204c0 4.4 3.6 8 8 8h480c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8H408c-4.4 0-8 3.6-8 8v56zm504-486H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zm0 632H120c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h784c4.4 0 8-3.6 8-8v-56c0-4.4-3.6-8-8-8zM115.4 518.9L271.7 642c5.8 4.6 14.4.5 14.4-6.9V388.9c0-7.4-8.5-11.5-14.4-6.9L115.4 505.1a8.74 8.74 0 0 0 0 13.8z"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-with-moon" viewBox="0 0 24 24">
+    <title>Auto light/dark, in light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path style="opacity: 50%" d="M 5.411 14.504 C 5.471 14.504 5.532 14.504 5.591 14.504 C 3.639 16.319 4.383 19.569 6.931 20.352 C 7.693 20.586 8.512 20.551 9.25 20.252 C 8.023 23.207 4.056 23.725 2.11 21.184 C 0.166 18.642 1.702 14.949 4.874 14.536 C 5.051 14.512 5.231 14.5 5.411 14.5 L 5.411 14.504 Z"/>
+      <line x1="14.5" y1="3.25" x2="14.5" y2="1.25"/>
+      <line x1="14.5" y1="15.85" x2="14.5" y2="17.85"/>
+      <line x1="10.044" y1="5.094" x2="8.63" y2="3.68"/>
+      <line x1="19" y1="14.05" x2="20.414" y2="15.464"/>
+      <line x1="8.2" y1="9.55" x2="6.2" y2="9.55"/>
+      <line x1="20.8" y1="9.55" x2="22.8" y2="9.55"/>
+      <line x1="10.044" y1="14.006" x2="8.63" y2="15.42"/>
+      <line x1="19" y1="5.05" x2="20.414" y2="3.636"/>
+      <circle cx="14.5" cy="9.55" r="3.6"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon-with-sun" viewBox="0 0 24 24">
+    <title>Auto light/dark, in dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+      class="icon-custom-derived-from-feather-sun-and-tabler-moon">
+      <path d="M 8.282 7.007 C 8.385 7.007 8.494 7.007 8.595 7.007 C 5.18 10.184 6.481 15.869 10.942 17.24 C 12.275 17.648 13.706 17.589 15 17.066 C 12.851 22.236 5.91 23.143 2.505 18.696 C -0.897 14.249 1.791 7.786 7.342 7.063 C 7.652 7.021 7.965 7 8.282 7 L 8.282 7.007 Z"/>
+      <line style="opacity: 50%" x1="18" y1="3.705" x2="18" y2="2.5"/>
+      <line style="opacity: 50%" x1="18" y1="11.295" x2="18" y2="12.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="4.816" x2="14.464" y2="3.964"/>
+      <line style="opacity: 50%" x1="20.711" y1="10.212" x2="21.563" y2="11.063"/>
+      <line style="opacity: 50%" x1="14.205" y1="7.5" x2="13.001" y2="7.5"/>
+      <line style="opacity: 50%" x1="21.795" y1="7.5" x2="23" y2="7.5"/>
+      <line style="opacity: 50%" x1="15.316" y1="10.184" x2="14.464" y2="11.036"/>
+      <line style="opacity: 50%" x1="20.711" y1="4.789" x2="21.563" y2="3.937"/>
+      <circle style="opacity: 50%" cx="18" cy="7.5" r="2.169"/>
+    </svg>
+  </symbol>
+  <symbol id="svg-pencil" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-pencil-code">
+      <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4" />
+      <path d="M13.5 6.5l4 4" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+  <symbol id="svg-eye" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-eye-code">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+      <path
+        d="M11.11 17.958c-3.209 -.307 -5.91 -2.293 -8.11 -5.958c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6c-.21 .352 -.427 .688 -.647 1.008" />
+      <path d="M20 21l2 -2l-2 -2" />
+      <path d="M17 17l-2 2l2 2" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation" aria-label="Toggle site navigation sidebar">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc" aria-label="Toggle table of contents sidebar">
+<label class="overlay sidebar-overlay" for="__navigation"></label>
+<label class="overlay toc-overlay" for="__toc"></label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <span class="icon"><svg><use href="#svg-menu"></use></svg></span>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="../../../index.html"><div class="brand">MarI/O Kart  documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+          <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+          <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+        <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="../../../index.html">
+  
+  <span class="sidebar-brand-text">MarI/O Kart  documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="../../../search.html" role="search">
+  <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Documentation</span></p>
+<ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/articles/articles.html">Research Articles</a><input aria-label="Toggle navigation of Research Articles" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" role="switch" type="checkbox"/><label for="toctree-checkbox-1"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/articles/OVERLAYS.html">MKDS Overlay System — Extensible Overlays for Mario Kart DS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/articles/READING_MEMORY.html">MKDS Emulator I/O &amp; Geometry Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/articles/READING_FILES.html"><code class="docutils literal notranslate"><span class="pre">mkds</span></code> — Mario Kart DS NKM &amp; KCL Readers</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/src.core.html">src.core package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/src.mkds_extensions.html">src.mkds_extensions package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/src.utils.html">src.utils package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/src.visualization.html">src.visualization package</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../../../api/mkds.html">MKDS File Parsing Library</a><input aria-label="Toggle navigation of MKDS File Parsing Library" class="toctree-checkbox" id="toctree-checkbox-2" name="toctree-checkbox-2" role="switch" type="checkbox"/><label for="toctree-checkbox-2"><span class="icon"><svg><use href="#svg-arrow-right"></use></svg></span></label><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/mkds/nkm.html">mkds.nkm module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/mkds/kcl.html">mkds.kcl module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../api/mkds/utils.html">mkds.utils module</a></li>
+</ul>
+</li>
+</ul>
+
+</div>
+</div>
+
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <a href="#" class="back-to-top muted-link">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8v12z"></path>
+          </svg>
+          <span>Back to top</span>
+        </a>
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle" aria-label="Toggle Light / Dark / Auto color theme">
+              <svg class="theme-icon-when-auto-light"><use href="#svg-sun-with-moon"></use></svg>
+              <svg class="theme-icon-when-auto-dark"><use href="#svg-moon-with-sun"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+            <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
+          </label>
+        </div>
+        <article role="main" id="furo-main-content">
+          <h1>Source code for src.core.train</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Parallel trainer for Mario Kart DS agents using DeSmuME, multiprocessing,</span>
+<span class="sd">shared memory frame streaming, and optional live GTK visualization.</span>
+
+<span class="sd">This module orchestrates end-to-end evaluation and evolution of a population of</span>
+<span class="sd">neural network controllers (NEAT-style) for Mario Kart DS. It supports three</span>
+<span class="sd">execution modes per evaluated individual:</span>
+
+<span class="sd">  1) **Headless** (`run_process`) — fast evaluation with no display.</span>
+<span class="sd">  2) **Display worker** (`run_window_process`) — renders frames and writes them</span>
+<span class="sd">     into a per-process shared-memory buffer; no GTK loop.</span>
+<span class="sd">  3) **Display host** (`run_window_host_process`) — renders frames, writes them</span>
+<span class="sd">     into shared memory, and owns the GTK window that tiles and presents all</span>
+<span class="sd">     *display-enabled* workers in real time.</span>
+
+<span class="sd">Key concepts</span>
+<span class="sd">------------</span>
+<span class="sd">- **Shared memory frames:** Each display-enabled process writes an RGBX</span>
+<span class="sd">  framebuffer of shape ``(SCREEN_HEIGHT, SCREEN_WIDTH, 4)`` (dtype</span>
+<span class="sd">  ``np.uint8``) to a POSIX shared-memory segment named ``f&quot;emu_frame_{id}&quot;``.</span>
+<span class="sd">  The host window process opens these buffers read-only for display tiling.</span>
+<span class="sd">- **Overlays:** Optional per-frame overlays are computed off the main emulation</span>
+<span class="sd">  loop by a single background thread fed via a queue. Overlays are composited in</span>
+<span class="sd">  the worker before writing to shared memory using</span>
+<span class="sd">  :func:`src.visualization.window.on_draw_memoryview`.</span>
+<span class="sd">- **Statistics / fitness:** Each process records split times and distances at</span>
+<span class="sd">  track checkpoints as a ``dict[int, list[tuple[float, float]]]`` mapping</span>
+<span class="sd">  ``checkpoint_id -&gt; [(delta_time, distance_at_split), ...]``. A simple fitness</span>
+<span class="sd">  function sums the recorded distances.</span>
+<span class="sd">- **Batching &amp; evolution:** :func:`run_training_session` evaluates a subset</span>
+<span class="sd">  (batch) of the population in parallel (bounded by ``num_proc``), aggregates</span>
+<span class="sd">  stats, then :func:`train` evolves the population.</span>
+
+<span class="sd">Threading &amp; processes</span>
+<span class="sd">---------------------</span>
+<span class="sd">- The DeSmuME emulator is created and used **inside each process** that runs it.</span>
+<span class="sd">- The GTK main loop **must** run in a single process. This module designates one</span>
+<span class="sd">  display-enabled process per batch as the *host* that creates the window and</span>
+<span class="sd">  drives GTK via `GLib.timeout_add`.</span>
+<span class="sd">- Overlays are computed by a **single background thread** (daemon) within each</span>
+<span class="sd">  display-enabled process to keep the emulation loop responsive.</span>
+
+<span class="sd">Shared-memory lifetime</span>
+<span class="sd">----------------------</span>
+<span class="sd">- Creation: Call :func:`safe_shared_memory` to create (or replace) a named</span>
+<span class="sd">  shared-memory segment.</span>
+<span class="sd">- Ownership: Workers **open** their frame buffer (``emu_frame_{id}``) by name</span>
+<span class="sd">  and keep a persistent ``SharedMemory`` handle as long as they render frames.</span>
+<span class="sd">- Teardown: After processes finish, the parent should **close and unlink**</span>
+<span class="sd">  per-process frame segments to avoid resource-tracker warnings.</span>
+
+<span class="sd">Examples</span>
+<span class="sd">--------</span>
+<span class="sd">Run 10 generations with a population of 32 where only one sample is displayed</span>
+<span class="sd">each batch and overlays with IDs 0, 3, and 4 are enabled:</span>
+
+<span class="sd">    &gt;&gt;&gt; if __name__ == &quot;__main__&quot;:</span>
+<span class="sd">    ...     train(</span>
+<span class="sd">    ...         num_iters=10,</span>
+<span class="sd">    ...         pop_size=32,</span>
+<span class="sd">    ...         show_samples=[False],   # broadcast later per batch</span>
+<span class="sd">    ...         overlay_ids=[0, 3, 4],</span>
+<span class="sd">    ...     )</span>
+
+<span class="sd">Notes</span>
+<span class="sd">-----</span>
+<span class="sd">- This module expects the `mariokart_ds.nds` ROM to be available in the working</span>
+<span class="sd">  directory and a valid savestate at index 3.</span>
+<span class="sd">- ``on_draw_memoryview`` expects an emulator-provided RGBX memory buffer</span>
+<span class="sd">  (4 bytes/pixel), and returns a premultiplied ARGB32 array suitable for Cairo.</span>
+<span class="sd">- ``MODEL_KEY_MAP`` defines a simple thresholded policy:</span>
+<span class="sd">  values &gt;= 0.5 are pressed, and the accelerator button is always pressed when</span>
+<span class="sd">  any action is taken.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># Builtin dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">random</span><span class="o">,</span><span class="w"> </span><span class="nn">math</span><span class="o">,</span><span class="w"> </span><span class="nn">os</span><span class="o">,</span><span class="w"> </span><span class="nn">sys</span><span class="o">,</span><span class="w"> </span><span class="nn">copy</span><span class="o">,</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing.managers</span><span class="w"> </span><span class="kn">import</span> <span class="n">DictProxy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Process</span><span class="p">,</span> <span class="n">Manager</span><span class="p">,</span> <span class="n">Lock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing.shared_memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">SharedMemory</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">queue</span><span class="w"> </span><span class="kn">import</span> <span class="n">Queue</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TypedDict</span><span class="p">,</span> <span class="n">TypeAlias</span><span class="p">,</span> <span class="n">cast</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">argparse</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+
+<span class="c1"># External dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">desmume.emulator</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeSmuME</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">SCREEN_PIXEL_SIZE</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">desmume.frontend.gtk_drawing_area_desmume</span><span class="w"> </span><span class="kn">import</span> <span class="n">AbstractRenderer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">desmume.controls</span><span class="w"> </span><span class="kn">import</span> <span class="n">Keys</span><span class="p">,</span> <span class="n">keymask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch._prims_common</span><span class="w"> </span><span class="kn">import</span> <span class="n">DeviceLikeType</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">gi</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">SAVE_STATE_ID</span>
+
+<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s2">&quot;Gtk&quot;</span><span class="p">,</span> <span class="s2">&quot;3.0&quot;</span><span class="p">)</span>
+<span class="n">gi</span><span class="o">.</span><span class="n">require_version</span><span class="p">(</span><span class="s2">&quot;Gdk&quot;</span><span class="p">,</span> <span class="s2">&quot;3.0&quot;</span><span class="p">)</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">gi.repository</span><span class="w"> </span><span class="kn">import</span> <span class="n">Gtk</span><span class="p">,</span> <span class="n">Gdk</span><span class="p">,</span> <span class="n">GLib</span>
+
+<span class="c1"># Local dependencies</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.memory</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.memory</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_clock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.model</span><span class="w"> </span><span class="kn">import</span> <span class="n">Genome</span><span class="p">,</span> <span class="n">EvolvedNet</span><span class="p">,</span> <span class="n">load_genome</span><span class="p">,</span> <span class="n">save_genome</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.utils.vector</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_mps_device</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.visualization.window</span><span class="w"> </span><span class="kn">import</span> <span class="n">SharedEmulatorWindow</span><span class="p">,</span> <span class="n">on_draw_memoryview</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.visualization.overlay</span><span class="w"> </span><span class="kn">import</span> <span class="n">AVAILABLE_OVERLAYS</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">src.core.metric</span><span class="w"> </span><span class="kn">import</span> <span class="n">DistanceMetric</span><span class="p">,</span> <span class="n">FitnessScorer</span><span class="p">,</span> <span class="n">Metric</span><span class="p">,</span> <span class="n">collect_all</span><span class="p">,</span> <span class="n">default_fitness_scorer</span>
+
+<div class="viewcode-block" id="EmulatorProcessConfig">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.EmulatorProcessConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmulatorProcessConfig</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">sample</span><span class="p">:</span> <span class="n">Genome</span>
+    <span class="n">host</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">show</span><span class="p">:</span> <span class="nb">bool</span></div>
+
+
+<div class="viewcode-block" id="EmulatorBatchConfig">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.EmulatorBatchConfig">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">EmulatorBatchConfig</span><span class="p">(</span><span class="n">TypedDict</span><span class="p">):</span>
+    <span class="n">size</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">display_shm_names</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">DeviceLikeType</span> <span class="o">|</span> <span class="kc">None</span>
+    <span class="n">overlay_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
+    <span class="n">metric_factories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="n">Metric</span><span class="p">]]</span></div>
+
+
+<div class="viewcode-block" id="CheckpointRecord">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.CheckpointRecord">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">CheckpointRecord</span><span class="p">:</span>
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">times</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span>
+    <span class="n">dists</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span></div>
+
+
+<span class="n">MODEL_KEY_MAP</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">3</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_UP</span><span class="p">,</span>
+    <span class="mi">2</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_DOWN</span><span class="p">,</span>
+    <span class="mi">1</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_LEFT</span><span class="p">,</span>
+    <span class="mi">0</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_RIGHT</span><span class="p">,</span>
+    <span class="mi">4</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_B</span><span class="p">,</span>
+    <span class="mi">5</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_A</span><span class="p">,</span>
+    <span class="mi">6</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_X</span><span class="p">,</span>
+    <span class="mi">7</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_Y</span><span class="p">,</span>
+    <span class="mi">8</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_L</span><span class="p">,</span>
+    <span class="mi">9</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_R</span><span class="p">,</span>
+    <span class="mi">10</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_START</span><span class="p">,</span>
+    <span class="mi">11</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_LEFT</span><span class="p">,</span>
+    <span class="mi">12</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_RIGHT</span><span class="p">,</span>
+    <span class="mi">13</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_UP</span><span class="p">,</span>
+    <span class="mi">14</span><span class="p">:</span> <span class="n">Keys</span><span class="o">.</span><span class="n">KEY_DOWN</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">CHECKPOINT_DIR_PATH</span> <span class="o">=</span> <span class="s2">&quot;./model_checkpoints&quot;</span>
+
+<span class="n">NUM_FRAMES_WITH_NOISE</span> <span class="o">=</span> <span class="mi">6500</span> <span class="c1"># This is usually dependent on when (during the race) the savestate loads.</span>
+
+<span class="n">shm_names</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">best_genome</span><span class="p">:</span> <span class="n">Genome</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="safe_shared_memory">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.safe_shared_memory">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">safe_shared_memory</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">size</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create or replace a named POSIX shared-memory segment.</span>
+
+<span class="sd">    This helper guarantees that a shared-memory block with the given `name`</span>
+<span class="sd">    exists with the requested `size`. If a stale block exists (e.g., from an</span>
+<span class="sd">    earlier crashed run), it is closed and unlinked before creating a fresh one.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      name: Symbolic name of the shared memory region</span>
+<span class="sd">        (e.g., ``&quot;emu_frame_0&quot;``).</span>
+<span class="sd">      size: Size in **bytes** to allocate for the region.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      multiprocessing.shared_memory.SharedMemory: An opened handle to the new</span>
+<span class="sd">      shared-memory block. The caller owns the handle and is responsible for</span>
+<span class="sd">      closing it (and unlinking at teardown time).</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">      ValueError: If `size &lt;= 0`.</span>
+<span class="sd">      OSError: If the OS cannot allocate or map the segment.</span>
+
+<span class="sd">    Side Effects:</span>
+<span class="sd">      - May unlink an existing segment of the same name.</span>
+<span class="sd">      - Creates a new segment in the system shared-memory namespace.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">multiprocessing</span><span class="w"> </span><span class="kn">import</span> <span class="n">shared_memory</span>
+
+    <span class="k">if</span> <span class="n">size</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;safe_shared_memory: size must be &gt; 0&quot;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">shm</span> <span class="o">=</span> <span class="n">shared_memory</span><span class="o">.</span><span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileExistsError</span><span class="p">:</span>
+        <span class="n">old</span> <span class="o">=</span> <span class="n">shared_memory</span><span class="o">.</span><span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">old</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">old</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+        <span class="n">shm</span> <span class="o">=</span> <span class="n">shared_memory</span><span class="o">.</span><span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">create</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">shm</span></div>
+
+
+
+<div class="viewcode-block" id="initialize_emulator">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.initialize_emulator">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_emulator</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">DeSmuME</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Initialize and prime a DeSmuME emulator instance.</span>
+
+<span class="sd">    Loads the MKDS ROM, restores a savestate (slot 3), mutes audio, and cycles</span>
+<span class="sd">    once to ensure memory is initialized. Then spins until the emulator reports</span>
+<span class="sd">    it is running.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      DeSmuME: A ready-to-use emulator instance positioned at the savestate.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">      - This function blocks until ``emu.is_running()`` returns True.</span>
+<span class="sd">      - The ROM path ``&quot;mariokart_ds.nds&quot;`` and savestate index are hard-coded.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">emu</span> <span class="o">=</span> <span class="n">DeSmuME</span><span class="p">()</span>
+    <span class="n">emu</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;private/mariokart_ds.nds&quot;</span><span class="p">)</span>
+    <span class="n">emu</span><span class="o">.</span><span class="n">savestate</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">SAVE_STATE_ID</span><span class="p">)</span>
+    <span class="n">emu</span><span class="o">.</span><span class="n">volume_set</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">emu</span><span class="o">.</span><span class="n">cycle</span><span class="p">()</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;clear&#39;</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">emu</span><span class="o">.</span><span class="n">is_running</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Waiting for emulator...&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">emu</span></div>
+
+
+
+<div class="viewcode-block" id="initialize_window">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.initialize_window">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_window</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">EmulatorProcessConfig</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">:</span> <span class="n">EmulatorBatchConfig</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">SharedEmulatorWindow</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create and initialize the tiled GTK window for live visualization.</span>
+
+<span class="sd">    Computes a near-square grid (``n_rows`` × ``n_cols``) based on the number</span>
+<span class="sd">    of display-enabled processes, instantiates a renderer bound to `emu`, and</span>
+<span class="sd">    returns a :class:`SharedEmulatorWindow` configured to read from the provided</span>
+<span class="sd">    shared-memory frame names.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      emu: Active :class:`DeSmuME` instance (used to build the renderer).</span>
+<span class="sd">      display_count: Number of display-enabled workers to tile.</span>
+<span class="sd">      shm_names: List of shared-memory segment names (``&quot;emu_frame_{id}&quot;``).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      SharedEmulatorWindow: GTK window object ready to be shown.</span>
+
+<span class="sd">    Side Effects:</span>
+<span class="sd">      - Initializes a GTK/Cairo renderer via :class:`AbstractRenderer`.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]:</span>
+       <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">shm_names</span> <span class="o">=</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;display_shm_names&#39;</span><span class="p">]</span>
+    <span class="n">display_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shm_names</span><span class="p">)</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="mi">1000</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">width</span> <span class="o">*</span> <span class="p">(</span><span class="n">SCREEN_HEIGHT</span> <span class="o">/</span> <span class="n">SCREEN_WIDTH</span><span class="p">))</span>
+    <span class="n">n_cols</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">display_count</span><span class="p">))</span>
+    <span class="n">n_rows</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">display_count</span> <span class="o">/</span> <span class="n">n_cols</span><span class="p">)</span>
+    <span class="n">renderer</span> <span class="o">=</span> <span class="n">AbstractRenderer</span><span class="o">.</span><span class="n">impl</span><span class="p">(</span><span class="n">emu</span><span class="p">)</span>
+    <span class="n">renderer</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">SharedEmulatorWindow</span><span class="p">(</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">height</span><span class="p">,</span>
+        <span class="n">n_cols</span><span class="o">=</span><span class="n">n_cols</span><span class="p">,</span>
+        <span class="n">n_rows</span><span class="o">=</span><span class="n">n_rows</span><span class="p">,</span>
+        <span class="n">renderer</span><span class="o">=</span><span class="n">renderer</span><span class="p">,</span>
+        <span class="n">shm_names</span><span class="o">=</span><span class="n">shm_names</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">window</span></div>
+
+
+
+<div class="viewcode-block" id="initialize_overlays">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.initialize_overlays">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_overlays</span><span class="p">(</span>
+    <span class="n">config</span><span class="p">:</span> <span class="n">EmulatorProcessConfig</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">:</span> <span class="n">EmulatorBatchConfig</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Queue</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Start a background overlay thread and return its work queue.</span>
+
+<span class="sd">    Given a list of overlay IDs, looks them up in :data:`AVAILABLE_OVERLAYS`,</span>
+<span class="sd">    starts a single daemon thread that consumes :class:`DeSmuME` instances from</span>
+<span class="sd">    a queue and applies the overlays. The queue is returned to the caller to</span>
+<span class="sd">    submit per-frame overlay requests.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      overlay_ids: List of overlay identifiers to enable (indexes into</span>
+<span class="sd">        :data:`AVAILABLE_OVERLAYS`).</span>
+<span class="sd">      device: Torch device on which overlay computations (if any) should run.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Queue | None: If `overlay_ids` is non-empty, a ``Queue`` into which the</span>
+<span class="sd">      caller should ``put(emu)`` once per frame, and ``put(None)`` on shutdown.</span>
+<span class="sd">      Returns ``None`` when `overlay_ids` is empty.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">      - The overlay worker catches exceptions per overlay and propagates a</span>
+<span class="sd">        summarized error message on failure via :func:`safe_thread`.</span>
+<span class="sd">      - Overlays are executed off the emulation thread to avoid jitter.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">overlay_ids</span> <span class="o">=</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;overlay_ids&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;show&#39;</span><span class="p">]</span> <span class="ow">or</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="n">overlay_ids</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="n">device</span> <span class="o">=</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]</span>
+    <span class="n">overlays</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="nb">id</span> <span class="ow">in</span> <span class="n">overlay_ids</span><span class="p">:</span>
+        <span class="n">overlays</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">AVAILABLE_OVERLAYS</span><span class="p">[</span><span class="nb">id</span><span class="p">])</span>
+
+    <span class="n">emu_queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">worker</span><span class="p">():</span>
+        <span class="k">nonlocal</span> <span class="n">overlays</span><span class="p">,</span> <span class="n">emu_queue</span><span class="p">,</span> <span class="nb">id</span>
+        <span class="k">assert</span> <span class="n">emu_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">emu_instance</span> <span class="o">=</span> <span class="n">emu_queue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">emu_instance</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="k">for</span> <span class="n">overlay</span> <span class="ow">in</span> <span class="n">overlays</span><span class="p">:</span>
+                <span class="n">safe_overlay</span> <span class="o">=</span> <span class="n">safe_thread</span><span class="p">(</span><span class="n">overlay</span><span class="p">,</span> <span class="n">proc_id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+                <span class="n">safe_overlay</span><span class="p">(</span><span class="n">emu_instance</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+            <span class="n">emu_queue</span><span class="o">.</span><span class="n">task_done</span><span class="p">()</span>
+
+    <span class="n">thread</span> <span class="o">=</span> <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">worker</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">thread</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">emu_queue</span></div>
+
+
+
+<div class="viewcode-block" id="handle_controls">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.handle_controls">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">handle_controls</span><span class="p">(</span><span class="n">emu</span><span class="p">:</span> <span class="n">DeSmuME</span><span class="p">,</span> <span class="n">logits</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">max_frame_with_noise</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Apply model outputs to emulator controls with a simple threshold policy.</span>
+
+<span class="sd">    All values ``&gt;= 0.5`` are considered pressed for the corresponding</span>
+<span class="sd">    ``MODEL_KEY_MAP`` entry. Additionally, when any action is pressed, the</span>
+<span class="sd">    accelerator (mapped to ``MODEL_KEY_MAP[5]``) is also pressed to keep the</span>
+<span class="sd">    kart moving.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      emu: Active emulator instance whose keypad state will be updated.</span>
+<span class="sd">      logits: 1D tensor of action activations aligned with ``MODEL_KEY_MAP``.</span>
+
+<span class="sd">    Side Effects:</span>
+<span class="sd">      - Calls ``emu.input.keypad_update(0)`` and</span>
+<span class="sd">        ``emu.input.keypad_add_key(...)`` multiple times.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">logits_list</span> <span class="o">=</span> <span class="n">logits</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+    <span class="n">emu</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">keypad_update</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">logits_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">read_clock</span><span class="p">(</span><span class="n">emu</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">max_frame_with_noise</span><span class="p">:</span>
+            <span class="n">v</span> <span class="o">+=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mf">0.5</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">emu</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">keypad_add_key</span><span class="p">(</span><span class="n">keymask</span><span class="p">(</span><span class="n">MODEL_KEY_MAP</span><span class="p">[</span><span class="n">i</span><span class="p">]))</span>
+
+    <span class="n">emu</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">keypad_add_key</span><span class="p">(</span><span class="n">keymask</span><span class="p">(</span><span class="n">MODEL_KEY_MAP</span><span class="p">[</span><span class="mi">5</span><span class="p">]))</span></div>
+
+
+
+
+
+
+<div class="viewcode-block" id="initialize_model">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.initialize_model">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">initialize_model</span><span class="p">(</span><span class="n">emu</span><span class="p">:</span> <span class="n">DeSmuME</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">EmulatorProcessConfig</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">:</span> <span class="n">EmulatorBatchConfig</span><span class="p">):</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]</span>
+    <span class="n">sample</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;sample&#39;</span><span class="p">]</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">EvolvedNet</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">forward</span> <span class="o">=</span> <span class="n">get_forward_func</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">forward</span></div>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_run_process</span><span class="p">(</span>
+    <span class="n">training_stats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">training_stats_lock</span><span class="p">,</span> 
+    <span class="n">config</span><span class="p">:</span> <span class="n">EmulatorProcessConfig</span><span class="p">,</span>
+    <span class="n">batch_config</span><span class="p">:</span> <span class="n">EmulatorBatchConfig</span>
+<span class="p">):</span>
+    <span class="k">assert</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;show&#39;</span><span class="p">]</span> <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]</span> <span class="k">else</span> <span class="kc">True</span><span class="p">,</span> <span class="s2">&quot;Host processes must have display enabled&quot;</span>
+    
+
+    <span class="c1"># Initialize emulator</span>
+    <span class="n">emu</span> <span class="o">=</span> <span class="n">initialize_emulator</span><span class="p">()</span>
+
+    <span class="c1"># Initialize model</span>
+    <span class="n">forward</span> <span class="o">=</span> <span class="n">initialize_model</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">)</span>
+    <span class="n">metrics</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Metric</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="p">()</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;metric_factories&#39;</span><span class="p">]]</span>
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span> <span class="n">m</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="n">device</span> <span class="o">=</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;device&#39;</span><span class="p">]</span>
+
+    <span class="c1"># Initialize display shared memory buffer as numpy array</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">config</span><span class="p">[</span><span class="s2">&quot;show&quot;</span><span class="p">]:</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">shm_frame</span> <span class="o">=</span> <span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;emu_frame_</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+            <span class="n">buffer</span><span class="o">=</span><span class="n">shm_frame</span><span class="o">.</span><span class="n">buf</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Initialize window</span>
+    <span class="n">window</span> <span class="o">=</span> <span class="n">initialize_window</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">)</span>
+
+    <span class="c1"># Set overlay overlay thread</span>
+    <span class="n">emu_queue</span> <span class="o">=</span> <span class="n">initialize_overlays</span><span class="p">(</span><span class="n">config</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">():</span>
+        <span class="k">nonlocal</span> <span class="n">stats</span><span class="p">,</span> <span class="n">emu_queue</span><span class="p">,</span> <span class="n">frame</span><span class="p">,</span> <span class="n">emu</span><span class="p">,</span> <span class="n">window</span>
+        <span class="n">emu</span><span class="o">.</span><span class="n">cycle</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">frame</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Copy display data to shared memory buffer</span>
+            <span class="n">buf</span> <span class="o">=</span> <span class="n">emu</span><span class="o">.</span><span class="n">display_buffer_as_rgbx</span><span class="p">()[:</span> <span class="n">SCREEN_PIXEL_SIZE</span> <span class="o">*</span> <span class="mi">4</span><span class="p">]</span>
+            <span class="n">new_frame</span> <span class="o">=</span> <span class="n">on_draw_memoryview</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+            <span class="n">np</span><span class="o">.</span><span class="n">copyto</span><span class="p">(</span><span class="n">frame</span><span class="p">,</span> <span class="n">new_frame</span><span class="p">)</span>
+
+
+        <span class="c1"># Inference / Game Update</span>
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">forward</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">metric</span> <span class="ow">in</span> <span class="n">metrics</span><span class="p">:</span>
+            <span class="n">metric</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+            
+        <span class="k">if</span> <span class="n">logits</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">id</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+            <span class="n">send_window_end_signal</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+
+        <span class="n">handle_controls</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">logits</span><span class="p">,</span> <span class="n">NUM_FRAMES_WITH_NOISE</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">emu_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="c1"># Queue Overlay Request</span>
+            <span class="n">emu_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">emu</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;host&#39;</span><span class="p">]:</span>
+        <span class="n">val</span> <span class="o">=</span> <span class="n">tick</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">val</span> <span class="o">==</span> <span class="kc">False</span><span class="p">:</span>
+            <span class="k">break</span>
+
+
+    <span class="k">if</span> <span class="n">window</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Will incrementally check if the population has died</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">check_end</span><span class="p">():</span>
+<span class="w">            </span><span class="sd">&quot;&quot;&quot;Quit GTK when all visible frames are cleared to zeros.&quot;&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;display_shm_names&#39;</span><span class="p">]:</span>
+                <span class="n">shm</span> <span class="o">=</span> <span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+                <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span>
+                    <span class="p">(</span><span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">shm</span><span class="o">.</span><span class="n">buf</span>
+                <span class="p">)</span>
+
+                <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="kc">True</span>
+
+            <span class="n">Gtk</span><span class="o">.</span><span class="n">main_quit</span><span class="p">()</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="n">GLib</span><span class="o">.</span><span class="n">timeout_add</span><span class="p">(</span><span class="mi">200</span><span class="p">,</span> <span class="n">check_end</span><span class="p">)</span>  <span class="c1"># non-blocking</span>
+        <span class="n">GLib</span><span class="o">.</span><span class="n">timeout_add</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">tick</span><span class="p">)</span>  <span class="c1"># non-blocking</span>
+        <span class="n">window</span><span class="o">.</span><span class="n">show_all</span><span class="p">()</span>
+        <span class="n">window</span><span class="o">.</span><span class="n">set_keep_above</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>   <span class="c1"># Keeps window above others temporarily</span>
+        <span class="n">window</span><span class="o">.</span><span class="n">present_with_time</span><span class="p">(</span><span class="n">Gtk</span><span class="o">.</span><span class="n">get_current_event_time</span><span class="p">())</span>  <span class="c1"># More reliable focus timing</span>
+        <span class="n">Gtk</span><span class="o">.</span><span class="n">main</span><span class="p">()</span>  <span class="c1"># blocking</span>
+
+    <span class="c1"># Safe thread shutdown for overlay</span>
+    <span class="k">if</span> <span class="n">emu_queue</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">emu_queue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+
+
+    <span class="c1"># Log results</span>
+    <span class="k">with</span> <span class="n">training_stats_lock</span><span class="p">:</span>
+        <span class="nb">id</span> <span class="o">=</span> <span class="n">config</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="n">collect_all</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+        <span class="n">training_stats</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">stats</span>
+
+
+<div class="viewcode-block" id="safe_thread">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.safe_thread">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">safe_thread</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">proc_id</span><span class="p">,</span> <span class="n">thread_id</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Wrap a function for background execution with nicer error reporting.</span>
+
+<span class="sd">    The returned wrapper calls `func(*args, **kwargs)` and converts any</span>
+<span class="sd">    exception into a concise message identifying the logical process and thread</span>
+<span class="sd">    of origin.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      func: Callable to wrap.</span>
+<span class="sd">      proc_id: Integer process identifier for error messages.</span>
+<span class="sd">      thread_id: Integer thread identifier for error messages.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Callable: A new callable with identical signature that raises a concise</span>
+<span class="sd">      :class:`Exception` on failure.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error on thread </span><span class="si">{</span><span class="n">thread_id</span><span class="si">}</span><span class="s2"> of process </span><span class="si">{</span><span class="n">proc_id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span></div>
+
+
+
+<div class="viewcode-block" id="send_window_end_signal">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.send_window_end_signal">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">send_window_end_signal</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Zero a per-process frame buffer to signal the host window to exit.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      id: Process index whose frame buffer should be cleared.</span>
+
+<span class="sd">    Side Effects:</span>
+<span class="sd">      - Writes zeros into the shared frame ``emu_frame_{id}``, which is used by</span>
+<span class="sd">        the host window&#39;s polling logic to detect end-of-batch.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">shm</span> <span class="o">=</span> <span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;emu_frame_</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">((</span><span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span> <span class="n">buffer</span><span class="o">=</span><span class="n">shm</span><span class="o">.</span><span class="n">buf</span><span class="p">)</span>
+    <span class="n">arr</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">0.0</span></div>
+
+
+
+<div class="viewcode-block" id="get_forward_func">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.get_forward_func">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">get_forward_func</span><span class="p">(</span><span class="n">emu</span><span class="p">:</span> <span class="n">DeSmuME</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="n">EvolvedNet</span><span class="p">,</span> <span class="n">device</span><span class="p">:</span> <span class="n">DeviceLikeType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a closure that performs one model step.</span>
+
+<span class="sd">    The returned callable reads emulator memory for sensor inputs, constructs the</span>
+<span class="sd">    model input vector, computes the control logits. When a terminal condition is reached (e.g.</span>
+<span class="sd">    clock &gt; 10000), it returns a NoneType value instead of logits.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      emu: Active emulator instance to read game state from.</span>
+<span class="sd">      model: Evolved network to evaluate (expects 6 inputs → action logits).</span>
+<span class="sd">      device: Torch device on which tensors are constructed and the model runs.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      Callable[[], torch.Tensor | None]:</span>
+<span class="sd">        A no-argument function that returns either a 1D tensor of action logits</span>
+<span class="sd">        or NoneType signaling the end of this individual&#39;s run.</span>
+
+<span class="sd">    Sensor model:</span>
+<span class="sd">      - Distances: forward/left/right obstacle distances are read and mapped</span>
+<span class="sd">        through ``tanh(1 - d / s1)`` with ``s1 = 60.0`` to compress range.</span>
+<span class="sd">      - Angles: direction to the next checkpoint as (cos θ, sin θ, -sin θ).</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">      - Checkpoint bookkeeping appends tuples of ``(delta_time, distance_at_split)``.</span>
+<span class="sd">      - This function reads directly from emulator memory via utility helpers.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">clock</span> <span class="o">=</span> <span class="n">read_clock</span><span class="p">(</span><span class="n">emu</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">clock</span> <span class="o">&gt;</span> <span class="mi">20000</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">s1</span> <span class="o">=</span> <span class="mf">1000.0</span>
+
+        <span class="c1"># Sensor inputs (obstacle distances)</span>
+        <span class="n">forward_d</span> <span class="o">=</span> <span class="n">read_forward_distance_obstacle</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">))</span>
+        <span class="n">left_d</span> <span class="o">=</span> <span class="n">read_left_distance_obstacle</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">right_d</span> <span class="o">=</span> <span class="n">read_right_distance_obstacle</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+        <span class="n">inputs_dist1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">forward_d</span><span class="p">,</span> <span class="n">left_d</span><span class="p">,</span> <span class="n">right_d</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">inputs_dist1</span> <span class="o">=</span> <span class="n">inputs_dist1</span> <span class="o">&lt;</span> <span class="mi">200</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">inputs_dist1</span><span class="p">)</span>
+        <span class="c1"># Angular relationship to next checkpoint</span>
+        <span class="n">angle</span> <span class="o">=</span> <span class="n">read_direction_to_checkpoint</span><span class="p">(</span><span class="n">emu</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">forward_a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">left_a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">right_a</span> <span class="o">=</span> <span class="o">-</span><span class="n">torch</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span>
+        <span class="n">inputs_dist2</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="n">forward_a</span><span class="p">,</span> <span class="n">left_a</span><span class="p">,</span> <span class="n">right_a</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span>
+
+        <span class="c1"># Model inference</span>
+        <span class="n">inputs</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cat</span><span class="p">([</span><span class="n">inputs_dist1</span><span class="p">,</span> <span class="n">inputs_dist2</span><span class="p">])</span>
+        
+        <span class="n">logits</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">inputs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">logits</span>
+
+    <span class="k">return</span> <span class="n">forward</span></div>
+
+
+
+<div class="viewcode-block" id="run_training_batch">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.run_training_batch">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_training_batch</span><span class="p">(</span>
+    <span class="n">batch_population</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Genome</span><span class="p">],</span>
+    <span class="n">show_samples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">],</span>
+    <span class="n">training_stats</span><span class="p">:</span> <span class="n">DictProxy</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span>
+    <span class="n">training_stats_lock</span><span class="p">,</span>
+    <span class="n">batch_config</span><span class="p">:</span> <span class="n">EmulatorBatchConfig</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate a batch of genomes concurrently, optionally with live display.</span>
+
+<span class="sd">    One process in the batch is promoted to the *display host* (first True in</span>
+<span class="sd">    `show_samples`) and creates a tiled GTK window that reads from the</span>
+<span class="sd">    per-process shared-memory frames listed in `shm_names`. Additional True</span>
+<span class="sd">    entries run as display workers; False entries run headless.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      batch_pop: Slice of the population to evaluate in this batch.</span>
+<span class="sd">      show_samples: Per-individual flags controlling display mode; exactly one</span>
+<span class="sd">        True is chosen as the host (the first True), additional Trues are</span>
+<span class="sd">        workers; all False means fully headless batch.</span>
+<span class="sd">      overlay_ids: Enabled overlay identifiers.</span>
+<span class="sd">      lock: IPC lock for synchronized writes to `pop_stats`.</span>
+<span class="sd">      pop_stats: Manager dict where each process writes a stats dict under its</span>
+<span class="sd">        local batch index.</span>
+
+<span class="sd">    Side Effects:</span>
+<span class="sd">      - Creates per-process shared-memory frame segments for display-enabled</span>
+<span class="sd">        individuals.</span>
+<span class="sd">      - Spawns processes with appropriate targets and joins them.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_config</span><span class="p">[</span><span class="s1">&#39;size&#39;</span><span class="p">]</span>
+
+    <span class="n">processes</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">host_proc_found</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">show</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">batch_size</span><span class="p">),</span> <span class="n">batch_population</span><span class="p">,</span> <span class="n">show_samples</span><span class="p">):</span>
+        <span class="n">config</span><span class="p">:</span> <span class="n">EmulatorProcessConfig</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="nb">id</span><span class="p">,</span>
+            <span class="s2">&quot;sample&quot;</span><span class="p">:</span> <span class="n">sample</span><span class="p">,</span>
+            <span class="s2">&quot;host&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;show&quot;</span><span class="p">:</span> <span class="n">show</span>
+        <span class="p">}</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">host_proc_found</span><span class="p">:</span>
+            <span class="n">host_proc_found</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="n">config</span><span class="p">[</span><span class="s2">&quot;host&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="k">if</span> <span class="n">show</span><span class="p">:</span>
+            <span class="n">shm_frame</span> <span class="o">=</span> <span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;emu_frame_</span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span>
+                <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+                <span class="n">buffer</span><span class="o">=</span><span class="n">shm_frame</span><span class="o">.</span><span class="n">buf</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">frame</span><span class="p">[:]</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+        <span class="n">process</span> <span class="o">=</span> <span class="n">Process</span><span class="p">(</span>
+            <span class="n">target</span><span class="o">=</span><span class="n">_run_process</span><span class="p">,</span>
+            <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">training_stats</span><span class="p">,</span> <span class="n">training_stats_lock</span><span class="p">,</span> <span class="n">config</span><span class="p">,</span> <span class="n">batch_config</span><span class="p">),</span>
+            <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">processes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">process</span><span class="p">)</span>
+
+    <span class="c1"># Start processes</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+    <span class="c1"># Join processes</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">processes</span><span class="p">:</span>
+        <span class="n">p</span><span class="o">.</span><span class="n">join</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="run_training_session">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.run_training_session">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run_training_session</span><span class="p">(</span>
+    <span class="n">pop</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Genome</span><span class="p">],</span>
+    <span class="n">num_proc</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">show_samples</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">],</span>
+    <span class="n">overlay_ids</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">metric_factories</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[],</span> <span class="n">Metric</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[],</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">DeviceLikeType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Evaluate the full population in parallel batches and collect statistics.</span>
+
+<span class="sd">    The population is partitioned into batches of size ``min(num_proc, remaining)``.</span>
+<span class="sd">    Each batch is launched via :func:`run_training_batch`, returning when all</span>
+<span class="sd">    processes in the batch complete and their stats have been merged.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      pop: Full population of genomes to evaluate.</span>
+<span class="sd">      num_proc: Maximum number of concurrent processes. If ``None``, uses</span>
+<span class="sd">        ``os.cpu_count() - 1``.</span>
+<span class="sd">      show_samples: List of booleans determining which individuals in each batch</span>
+<span class="sd">        should display; a one-element list (e.g., ``[False]``) is **broadcast**</span>
+<span class="sd">        to the batch size on each iteration.</span>
+<span class="sd">      overlay_ids: Overlay identifiers to enable in display-enabled processes.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      dict[int, dict[int, list[tuple[float, float]]]]: Mapping of *global*</span>
+<span class="sd">      population index to that individual&#39;s checkpoint stats dict.</span>
+
+<span class="sd">    Notes:</span>
+<span class="sd">      - This function uses a :class:`multiprocessing.Manager` ``dict`` so that</span>
+<span class="sd">        per-process stats can be retrieved without explicit pipes or queues.</span>
+<span class="sd">      - Shared-memory frame buffers are currently **not** unlinked here; consider</span>
+<span class="sd">        cleaning them in a higher-level teardown if needed.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">shm_names</span>
+
+    <span class="c1"># If no number of processes is specified, then we&#39;ll use the max minus one</span>
+    <span class="k">if</span> <span class="n">num_proc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">num_proc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="n">num_proc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">num_proc</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">show_samples</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">show_samples</span> <span class="o">*=</span> <span class="n">num_proc</span>
+
+    <span class="n">pop_stats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">pop_size</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span>
+    <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="n">shm_names</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_proc</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">show_samples</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="k">continue</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;emu_frame_</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">size</span> <span class="o">=</span> <span class="n">SCREEN_HEIGHT</span> <span class="o">*</span> <span class="n">SCREEN_WIDTH</span> <span class="o">*</span> <span class="mi">4</span>
+        <span class="n">shm_frame</span> <span class="o">=</span> <span class="n">safe_shared_memory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">frame</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">(</span>
+            <span class="n">shape</span><span class="o">=</span><span class="p">(</span><span class="n">SCREEN_HEIGHT</span><span class="p">,</span> <span class="n">SCREEN_WIDTH</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+            <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">,</span>
+            <span class="n">buffer</span><span class="o">=</span><span class="n">shm_frame</span><span class="o">.</span><span class="n">buf</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">shm_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="n">count</span> <span class="o">&lt;</span> <span class="n">pop_size</span><span class="p">:</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">pop_size</span> <span class="o">-</span> <span class="n">count</span><span class="p">,</span> <span class="n">num_proc</span><span class="p">)</span>
+
+        <span class="n">batch_config</span><span class="p">:</span> <span class="n">EmulatorBatchConfig</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;overlay_ids&quot;</span><span class="p">:</span> <span class="n">overlay_ids</span><span class="p">,</span>
+            <span class="s2">&quot;display_shm_names&quot;</span><span class="p">:</span> <span class="n">shm_names</span><span class="p">,</span>
+            <span class="s2">&quot;size&quot;</span><span class="p">:</span> <span class="n">batch_size</span><span class="p">,</span>
+            <span class="s2">&quot;metric_factories&quot;</span><span class="p">:</span> <span class="n">metric_factories</span><span class="p">,</span>
+            <span class="s2">&quot;device&quot;</span><span class="p">:</span> <span class="n">device</span>
+        <span class="p">}</span>
+
+        <span class="n">show_samples</span> <span class="o">=</span> <span class="n">show_samples</span><span class="p">[:</span><span class="n">batch_size</span><span class="p">]</span>
+
+        <span class="k">with</span> <span class="n">Manager</span><span class="p">()</span> <span class="k">as</span> <span class="n">manager</span><span class="p">:</span>
+            <span class="c1"># Create shared list for stats (locking)</span>
+            <span class="n">shared_pop_stats</span><span class="p">:</span> <span class="n">DictProxy</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]</span> <span class="o">=</span> <span class="n">manager</span><span class="o">.</span><span class="n">dict</span><span class="p">()</span>
+            <span class="n">lock</span> <span class="o">=</span> <span class="n">Lock</span><span class="p">()</span>
+
+            <span class="n">run_training_batch</span><span class="p">(</span>
+                <span class="n">pop</span><span class="p">[</span><span class="n">count</span> <span class="p">:</span> <span class="n">count</span> <span class="o">+</span> <span class="n">batch_size</span><span class="p">],</span>
+                <span class="n">show_samples</span><span class="o">=</span><span class="n">show_samples</span><span class="p">,</span>
+                <span class="n">training_stats</span><span class="o">=</span><span class="n">shared_pop_stats</span><span class="p">,</span>
+                <span class="n">training_stats_lock</span><span class="o">=</span><span class="n">lock</span><span class="p">,</span>
+                <span class="n">batch_config</span><span class="o">=</span><span class="n">batch_config</span>
+            <span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">shared_pop_stats</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="n">pop_stats</span><span class="p">[</span><span class="n">count</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">s</span>
+
+        <span class="n">count</span> <span class="o">+=</span> <span class="n">batch_size</span>
+
+    <span class="c1"># TODO: Cleanup all shared memory buffers here</span>
+    <span class="k">return</span> <span class="n">pop_stats</span></div>
+
+
+
+<div class="viewcode-block" id="fitness">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.fitness">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">fitness</span><span class="p">(</span><span class="n">pop_stats</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">]],</span> <span class="n">scorer</span><span class="p">:</span> <span class="n">FitnessScorer</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Compute scalar fitness from per-checkpoint stats.</span>
+
+<span class="sd">    The current fitness heuristic sums the recorded distances across all</span>
+<span class="sd">    checkpoint splits for each individual.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      pop_stats: Mapping of population index to that individual&#39;s stats dict</span>
+<span class="sd">        (``checkpoint_id -&gt; [(delta_time, distance_at_split), ...]``).</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">      list[float]: Fitness values *ordered by population index*.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pop_stats</span><span class="o">.</span><span class="n">keys</span><span class="p">()):</span>
+        <span class="n">metrics</span> <span class="o">=</span> <span class="n">pop_stats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="n">scorer</span><span class="p">(</span><span class="n">metrics</span><span class="p">)</span>
+        <span class="n">scores</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">score</span><span class="p">)</span>
+        
+    <span class="k">return</span> <span class="n">scores</span></div>
+
+
+
+
+<div class="viewcode-block" id="train">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.train">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">train</span><span class="p">(</span>
+    <span class="n">num_iters</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">pop_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">log_interval</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="n">top_k</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">device</span><span class="p">:</span> <span class="n">DeviceLikeType</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scorer</span><span class="p">:</span> <span class="n">FitnessScorer</span> <span class="o">=</span> <span class="n">default_fitness_scorer</span><span class="p">,</span>
+    <span class="n">load_checkpoint_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    
+    <span class="o">**</span><span class="n">simulation_kwargs</span><span class="p">,</span>
+<span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Main evolutionary training loop (selection + mutation).</span>
+
+<span class="sd">    Repeats:</span>
+<span class="sd">      1) Evaluate the current population via :func:`run_training_session`.</span>
+<span class="sd">      2) Rank by fitness.</span>
+<span class="sd">      3) Keep the best, and refill the population by mutating uniformly sampled</span>
+<span class="sd">         parents from the top-k set.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">      num_iters: Number of generations to run.</span>
+<span class="sd">      pop_size: Number of individuals per generation.</span>
+<span class="sd">      log_interval: Print progress every N generations.</span>
+<span class="sd">      top_k: Either the number of top individuals to sample parents from, or a</span>
+<span class="sd">        fraction in ``(0, 1]`` interpreted as a proportion of the population.</span>
+<span class="sd">      **simulation_kwargs: Passed through to :func:`run_training_session`.</span>
+
+<span class="sd">    Side Effects:</span>
+<span class="sd">      - Prints best fitness per `log_interval`.</span>
+<span class="sd">      - Mutates and replaces the population in place each generation.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">best_genome</span>
+    <span class="k">if</span> <span class="n">load_checkpoint_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pop</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Genome</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">Genome</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pop_size</span><span class="p">)]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">pop</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">Genome</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">load_genome</span><span class="p">(</span><span class="n">load_checkpoint_path</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">pop_size</span><span class="p">)]</span>
+    
+    <span class="k">for</span> <span class="n">g</span> <span class="ow">in</span> <span class="n">pop</span><span class="p">:</span> <span class="n">g</span><span class="o">.</span><span class="n">mutate_add_conn</span><span class="p">()</span>  <span class="c1"># start with random links</span>
+
+    <span class="k">if</span> <span class="n">top_k</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">top_k</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span> <span class="o">*</span> <span class="n">top_k</span><span class="p">))</span>
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">top_k</span><span class="p">,</span> <span class="nb">int</span><span class="p">),</span> <span class="s2">&quot;top_k must be an integer or a float less than 1&quot;</span>
+
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_iters</span><span class="p">):</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="n">run_training_session</span><span class="p">(</span><span class="n">pop</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span> <span class="o">**</span><span class="n">simulation_kwargs</span><span class="p">)</span>
+        
+        <span class="n">scores</span> <span class="o">=</span> <span class="n">fitness</span><span class="p">(</span><span class="n">stats</span><span class="p">,</span> <span class="n">scorer</span><span class="p">)</span>
+        <span class="n">scores</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">enumerate</span><span class="p">(</span><span class="n">scores</span><span class="p">),</span> <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        
+        <span class="nb">print</span><span class="p">(</span><span class="n">best_genome</span><span class="o">.</span><span class="n">conns</span> <span class="k">if</span> <span class="n">best_genome</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="n">log_interval</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s2">&quot;clear&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Best Fitness: </span><span class="si">{</span><span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">first_i</span> <span class="o">=</span> <span class="n">scores</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">best_genome</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="n">first_i</span><span class="p">])</span>
+        <span class="n">newpop</span> <span class="o">=</span> <span class="p">[</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="n">first_i</span><span class="p">])]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pop</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">rand_i</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">scores</span><span class="p">[:</span><span class="mi">5</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">g</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">pop</span><span class="p">[</span><span class="n">rand_i</span><span class="p">])</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">([</span><span class="n">g</span><span class="o">.</span><span class="n">mutate_weight</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">mutate_add_conn</span><span class="p">,</span> <span class="n">g</span><span class="o">.</span><span class="n">mutate_add_node</span><span class="p">])()</span>
+            <span class="n">newpop</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="n">pop</span> <span class="o">=</span> <span class="n">newpop</span></div>
+
+
+<div class="viewcode-block" id="make_distance_metric">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.make_distance_metric">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_distance_metric</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">DistanceMetric</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../../api/src.core.html#src.core.train.main">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Train a neural network&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_iters&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--log_interval&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--top_k&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--pop_size&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_processes&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--num_displays&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--load_checkpoint_path&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--load_checkpoint_recent&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&quot;--save_checkpoint&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    
+    <span class="n">num_proc</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">num_processes</span>
+    <span class="k">if</span> <span class="n">num_proc</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">num_proc</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">cpu_count</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">num_proc</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">num_proc</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">num_proc</span> <span class="o">=</span> <span class="mi">1</span>
+    
+    <span class="n">num_displays</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">num_displays</span>
+    <span class="k">if</span> <span class="n">num_displays</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">num_displays</span> <span class="o">=</span> <span class="n">num_proc</span>
+    
+    <span class="n">num_headless</span> <span class="o">=</span> <span class="n">num_proc</span> <span class="o">-</span> <span class="n">num_displays</span>
+    
+    <span class="n">device</span> <span class="o">=</span> <span class="n">get_mps_device</span><span class="p">()</span>
+    
+    <span class="n">pop_size</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">pop_size</span>
+    <span class="k">if</span> <span class="n">pop_size</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">pop_size</span> <span class="o">=</span> <span class="n">num_proc</span>
+        
+    <span class="n">load_checkpoint_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="n">Path</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">load_checkpoint_recent</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">CHECKPOINT_DIR_PATH</span><span class="p">)</span>
+        
+        <span class="n">files</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">(),</span>
+            <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">stat</span><span class="p">()</span><span class="o">.</span><span class="n">st_mtime</span><span class="p">,</span>
+            <span class="n">reverse</span><span class="o">=</span><span class="kc">True</span>
+        <span class="p">)</span>
+        
+        <span class="n">load_checkpoint_path</span> <span class="o">=</span> <span class="n">files</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">load_checkpoint_path</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">load_checkpoint_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">load_checkpoint_path</span>
+        
+    
+    <span class="n">show_displays</span> <span class="o">=</span> <span class="p">[</span><span class="kc">True</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_displays</span> <span class="o">+</span> <span class="p">[</span><span class="kc">False</span><span class="p">]</span> <span class="o">*</span> <span class="n">num_headless</span>
+    
+    <span class="k">try</span><span class="p">:</span>
+        
+        <span class="n">train</span><span class="p">(</span>
+            <span class="n">num_iters</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">num_iters</span><span class="p">,</span>
+            <span class="n">pop_size</span><span class="o">=</span><span class="n">pop_size</span><span class="p">,</span>
+            <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+            <span class="n">top_k</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">top_k</span><span class="p">,</span>
+            <span class="n">show_samples</span><span class="o">=</span><span class="n">show_displays</span><span class="p">,</span>
+            <span class="n">overlay_ids</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">],</span>
+            <span class="n">num_proc</span><span class="o">=</span><span class="n">num_proc</span><span class="p">,</span>
+            <span class="n">metric_factories</span><span class="o">=</span><span class="p">[</span><span class="n">make_distance_metric</span><span class="p">],</span>
+            <span class="n">load_checkpoint_path</span><span class="o">=</span><span class="n">load_checkpoint_path</span>
+        <span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;An error occurred: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="k">global</span> <span class="n">shm_names</span><span class="p">,</span> <span class="n">best_genome</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">shm_names</span><span class="p">:</span>
+            <span class="n">shm</span> <span class="o">=</span> <span class="n">SharedMemory</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">shm</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+            <span class="n">shm</span><span class="o">.</span><span class="n">unlink</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">save_checkpoint</span> <span class="o">==</span> <span class="kc">True</span> <span class="ow">and</span> <span class="n">best_genome</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">dest_file_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">CHECKPOINT_DIR_PATH</span><span class="p">)</span><span class="o">.</span><span class="n">joinpath</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;chk_</span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">hash</span><span class="p">(</span><span class="n">best_genome</span><span class="p">))[:</span><span class="mi">8</span><span class="p">]</span><span class="si">}</span><span class="s2">.json&quot;</span><span class="p">)</span>
+            <span class="n">save_genome</span><span class="p">(</span><span class="n">best_genome</span><span class="p">,</span> <span class="n">dest_file_path</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Model Weights Saved at </span><span class="si">{</span><span class="n">dest_file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+    
+</pre></div>
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          
+          
+        </div>
+        <div class="bottom-of-page">
+          <div class="left-details">
+            <div class="copyright">
+                Copyright &#169; 2025, Blake Moody
+            </div>
+            Made with <a href="https://www.sphinx-doc.org/">Sphinx</a> and <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+            
+            <a href="https://github.com/pradyunsg/furo">Furo</a>
+            
+          </div>
+          <div class="right-details">
+            
+          </div>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer no-toc">
+      
+      
+      
+    </aside>
+  </div>
+</div><script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../../_static/scripts/furo.js?v=46bd48cc"></script>
+    </body>
+</html>
